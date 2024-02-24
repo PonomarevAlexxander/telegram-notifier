@@ -81,7 +81,7 @@ class GithubRepositoryUpdateHandlerTest {
         GithubClient client = Mockito.mock(GithubClient.class);
         GithubRepositoryUpdateHandler handler = new GithubRepositoryUpdateHandler(client);
 
-        assertThat(handler.supports(link.toString()))
+        assertThat(handler.supports(link))
             .isEqualTo(supports);
     }
 }

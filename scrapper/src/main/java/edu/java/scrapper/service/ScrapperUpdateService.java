@@ -18,7 +18,7 @@ public class ScrapperUpdateService implements UpdateService {
         List<LinkUpdate> updates = new LinkedList<>();
         for (var link : toUpdate) {
             for (var handler : handlers) {
-                if (handler.supports(link.resource().getPath())) {
+                if (handler.supports(link.resource())) {
                     updates.add(handler.getUpdate(link));
                 }
             }

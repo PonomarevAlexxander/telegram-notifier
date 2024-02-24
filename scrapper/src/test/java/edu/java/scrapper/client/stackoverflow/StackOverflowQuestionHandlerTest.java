@@ -92,7 +92,7 @@ class StackOverflowQuestionHandlerTest {
         StackOverflowClient client = Mockito.mock(StackOverflowClient.class);
         StackOverflowQuestionHandler handler = new StackOverflowQuestionHandler(client);
 
-        assertThat(handler.supports(link.toString()))
+        assertThat(handler.supports(link))
             .isEqualTo(supports);
     }
 }
