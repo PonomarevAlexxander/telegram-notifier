@@ -8,13 +8,13 @@ public class StackOverflowClientBuilder {
     private StackOverflowClientBuilder() {
     }
 
-    public static StackOverflowClient build(String baseUrl) {
-        WebClient webClient = WebClient.builder()
+    public static StackOverflowClient build(WebClient.Builder builder, String baseUrl) {
+        WebClient webClient = builder
             .baseUrl(baseUrl)
             .build();
         HttpServiceProxyFactory proxyFactory = HttpServiceProxyFactory
             .builderFor(WebClientAdapter.create(webClient))
             .build();
-        return proxyFactory.createClient(edu.java.scrapper.client.stackoverflow.StackOverflowClient.class);
+        return proxyFactory.createClient(StackOverflowClient.class);
     }
 }

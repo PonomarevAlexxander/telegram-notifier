@@ -8,8 +8,8 @@ public class GithubClientBuilder {
     private GithubClientBuilder() {
     }
 
-    public static GithubClient build(String baseUrl) {
-        WebClient webClient = WebClient.builder()
+    public static GithubClient build(WebClient.Builder builder, String baseUrl) {
+        WebClient webClient = builder
             .baseUrl(baseUrl)
             .build();
         HttpServiceProxyFactory proxyFactory = HttpServiceProxyFactory

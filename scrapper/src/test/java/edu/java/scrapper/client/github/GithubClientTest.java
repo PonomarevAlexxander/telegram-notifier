@@ -5,6 +5,7 @@ import edu.java.scrapper.client.github.dto.Repository;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.web.reactive.function.client.WebClient;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
@@ -15,7 +16,7 @@ import static wiremock.com.google.common.net.HttpHeaders.CONTENT_TYPE;
 
 @WireMockTest(httpPort = 8080)
 class GithubClientTest {
-    public GithubClient client = GithubClientBuilder.build("http://localhost:8080");
+    public GithubClient client = GithubClientBuilder.build(WebClient.builder(), "http://localhost:8080");
 
     @Test
     @DisplayName("Test if getRepository() satisfies api")
