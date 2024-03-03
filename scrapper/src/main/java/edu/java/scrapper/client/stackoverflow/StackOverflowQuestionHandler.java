@@ -5,6 +5,7 @@ import edu.java.scrapper.client.stackoverflow.dto.StackOverflowAnswersResponse;
 import edu.java.scrapper.domain.Link;
 import edu.java.scrapper.domain.LinkUpdate;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,11 @@ public class StackOverflowQuestionHandler implements UpdateHandler {
         StackOverflowAnswersResponse allByQuestion =
             client.getAllByQuestionFromDate(Long.parseLong(id), lastUpdated.toEpochSecond());
         if (!allByQuestion.answers().isEmpty()) {
-            return new LinkUpdate(link, true, "some answers have been modified");
+            List<String> answers = allByQuestion.answers().stream()
+                .map(answer -> String.format("Answer #%s \"%s\".", answer.answerId(), answer.message()))
+                .toList();
+
+            return new LinkUpdate(link, true, String.format("Some answers have been modified: %s", answers));
         }
         return new LinkUpdate(link, false, "");
     }

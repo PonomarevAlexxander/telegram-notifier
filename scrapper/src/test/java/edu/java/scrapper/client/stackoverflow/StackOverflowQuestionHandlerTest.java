@@ -23,7 +23,10 @@ class StackOverflowQuestionHandlerTest {
     void getUpdate_new_fetched() {
         StackOverflowClient client = Mockito.mock(StackOverflowClient.class);
         Mockito.when(client.getAllByQuestionFromDate(anyLong(), anyLong())).thenReturn(new StackOverflowAnswersResponse(
-            List.of(new StackOverflowAnswer(OffsetDateTime.now()), new StackOverflowAnswer(OffsetDateTime.now()))));
+            List.of(
+                new StackOverflowAnswer(OffsetDateTime.now(), "", ""),
+                new StackOverflowAnswer(OffsetDateTime.now(), "", "")
+            )));
         StackOverflowQuestionHandler handler = new StackOverflowQuestionHandler(client);
 
         Link link = new Link(
