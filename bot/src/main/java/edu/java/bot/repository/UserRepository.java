@@ -6,4 +6,6 @@ public interface UserRepository {
     void insertUser(User user);
 
     void deleteUser(Long id);
+
+    boolean isRegistered(Long chatId);
 }

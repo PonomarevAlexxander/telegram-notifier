@@ -7,10 +7,18 @@ app:
     base-url: "https://api.stackexchange.com"
   github-client:
     base-url: "https://api.github.com"
+  bot-client:
+    base-url: "http://localhost:8090"
 
 spring:
   application:
     name: scrapper
+
+springdoc:
+  api-docs:
+    path: "/api-docs"
+  swagger-ui:
+    path: "/swagger-ui"
 
 server:
   port: 8080

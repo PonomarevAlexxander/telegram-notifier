@@ -1,5 +1,7 @@
 package edu.java.scrapper.configuration;
 
+import edu.java.scrapper.client.bot.BotClient;
+import edu.java.scrapper.client.bot.BotClientBuilder;
 import edu.java.scrapper.client.github.GithubClient;
 import edu.java.scrapper.client.github.GithubClientBuilder;
 import edu.java.scrapper.client.stackoverflow.StackOverflowClient;
@@ -22,5 +24,10 @@ public class ClientConfiguration {
     @Bean
     public GithubClient githubClient(ApplicationConfig config) {
         return GithubClientBuilder.build(builder, config.githubClient().baseUrl());
+    }
+
+    @Bean
+    public BotClient botClient(ApplicationConfig config) {
+        return BotClientBuilder.build(builder, config.botClient().baseUrl());
     }
 }
