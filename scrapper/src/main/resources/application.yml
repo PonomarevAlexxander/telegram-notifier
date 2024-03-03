@@ -20,6 +20,8 @@ spring:
     url: jdbc:postgresql://localhost:5432/scrapper
   liquibase:
     enabled: false
+  jooq:
+    sql-dialect: Postgres
 
 springdoc:
   api-docs:
