@@ -5,7 +5,9 @@ import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.parser.MarkdownParser;
 import java.util.List;
+import org.springframework.stereotype.Component;
 
+@Component
 public class HelpCmd implements Command {
     private final List<Command> commands;
 

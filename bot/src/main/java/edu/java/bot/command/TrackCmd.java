@@ -8,7 +8,9 @@ import edu.java.bot.util.LinkValidator;
 import java.net.URI;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TrackCmd implements Command {
     private final Pattern regex = Pattern.compile("^/track +(?<link>[^ ]+)");
 

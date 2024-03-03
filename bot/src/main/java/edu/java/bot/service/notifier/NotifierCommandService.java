@@ -5,9 +5,9 @@ import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.command.Command;
 import edu.java.bot.service.CommandService;
 import java.util.List;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class NotifierCommandService implements CommandService {
     private final List<Command> commands;
 

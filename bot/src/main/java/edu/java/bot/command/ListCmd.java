@@ -3,7 +3,9 @@ package edu.java.bot.command;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.service.LinkService;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ListCmd implements Command {
     private final LinkService service;
 
