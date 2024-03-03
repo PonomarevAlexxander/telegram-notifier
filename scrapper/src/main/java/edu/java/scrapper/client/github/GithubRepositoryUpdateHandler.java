@@ -5,6 +5,8 @@ import edu.java.scrapper.client.github.dto.Repository;
 import edu.java.scrapper.domain.Link;
 import edu.java.scrapper.domain.LinkUpdate;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +27,12 @@ public class GithubRepositoryUpdateHandler implements UpdateHandler {
         Repository repository = client.getRepository(user, repo);
         OffsetDateTime lastUpdated = link.getLastTracked();
         if (repository.lastUpdated().isAfter(lastUpdated)) {
-            return new LinkUpdate(link, true, "repository has some new changes");
+            List<String> commits =
+                client.getRepositoryCommitsSince(user, repo, DateTimeFormatter.ISO_INSTANT.format(lastUpdated)).stream()
+                    .map(commitsListItem -> commitsListItem.commit().message())
+                    .toList();
+
+            return new LinkUpdate(link, true, String.format("repository has some new commits: %s", commits));
         }
         return new LinkUpdate(link, false, "");
     }
