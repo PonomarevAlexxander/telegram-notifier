@@ -16,7 +16,9 @@ public record ApplicationConfig(
     @NotNull
     StackOverflowClient stackOverflowClient,
     @NotNull
-    GithubClient githubClient
+    GithubClient githubClient,
+    @NotNull
+    BotClient botClient
 ) {
     public record Scheduler(boolean enable, @NotNull Duration interval, @NotNull Duration forceCheckDelay) {
     }
@@ -25,5 +27,8 @@ public record ApplicationConfig(
     }
 
     public record GithubClient(@NotBlank String baseUrl) {
+    }
+
+    public record BotClient(@NotBlank String baseUrl) {
     }
 }

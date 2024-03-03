@@ -9,5 +9,9 @@ import java.util.List;
  * @author Alexander Ponomarev
  */
 public interface LinkRepository {
-    List<Link> getAllLinks();
+    List<Link> getAllLByChatId(Long chatId);
+
+    Long insert(Link link);
+
+    Long delete(Link link);
 }
