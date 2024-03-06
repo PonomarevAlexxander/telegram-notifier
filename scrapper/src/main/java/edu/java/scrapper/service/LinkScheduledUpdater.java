@@ -14,7 +14,7 @@ public class LinkScheduledUpdater {
     private final UpdateService updateService;
     private static final Logger LOGGER = LoggerFactory.getLogger(LinkScheduledUpdater.class);
 
-    @Scheduled(fixedDelayString = "#{@'app-edu.java.scrapper.configuration.ApplicationConfig'.scheduler().interval()}")
+    @Scheduled(fixedDelayString = "${app.scheduler.interval}")
     public void update() {
         LOGGER.info("updating...");
     }
