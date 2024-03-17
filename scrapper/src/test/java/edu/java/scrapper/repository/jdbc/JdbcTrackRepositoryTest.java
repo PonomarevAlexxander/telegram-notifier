@@ -62,10 +62,10 @@ class JdbcTrackRepositoryTest extends IntegrationTest {
     @Transactional
     @Rollback
     void delete_no_err() {
-        linkRepository.add(new Link(null, URI.create("http://some.com"), OffsetDateTime.now()));
+        Long id = linkRepository.add(new Link(null, URI.create("http://some.com"), OffsetDateTime.now()));
         chatRepository.add(new Chat(1L));
 
-        TrackRecord record = new TrackRecord(1L, 1L);
+        TrackRecord record = new TrackRecord(1L, id);
         trackRepository.add(record);
         trackRepository.delete(record);
 
