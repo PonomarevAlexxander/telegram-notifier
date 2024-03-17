@@ -6,12 +6,14 @@ import edu.java.scrapper.domain.TrackRecord;
 import edu.java.scrapper.dto.LinkDTO;
 import edu.java.scrapper.exception.LinkIsNotSupportedException;
 import edu.java.scrapper.exception.ResourceAlreadyExistException;
-import edu.java.scrapper.exception.ResourceNotExistException;
 import edu.java.scrapper.repository.ChatRepository;
 import edu.java.scrapper.repository.LinkRepository;
 import edu.java.scrapper.repository.TrackRepository;
-import edu.java.scrapper.service.LinkService;
 import edu.java.scrapper.service.UpdateService;
+import java.net.URI;
+import java.time.OffsetDateTime;
+import java.util.LinkedList;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,14 +21,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.net.URI;
-import java.time.OffsetDateTime;
-import java.util.LinkedList;
-import java.util.List;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class ScrapperLinkServiceTest {
@@ -51,7 +47,7 @@ class ScrapperLinkServiceTest {
 
         Mockito.when(linkRepository.getAllLByChatId(1L)).thenReturn(links);
 
-        assertThat(linkService.getAll(1L))
+        assertThat(linkService.getAllByChatId(1L))
             .asList()
             .containsExactly(new LinkDTO(1L, "https://github.com"), new LinkDTO(1L, "https://another.com"));
     }
@@ -61,7 +57,7 @@ class ScrapperLinkServiceTest {
     void getAll_not_existing() {
         Mockito.when(linkRepository.getAllLByChatId(Mockito.anyLong())).thenReturn(new LinkedList<>());
 
-        assertThat(linkService.getAll(1L))
+        assertThat(linkService.getAllByChatId(1L))
             .asList()
             .isEmpty();
     }

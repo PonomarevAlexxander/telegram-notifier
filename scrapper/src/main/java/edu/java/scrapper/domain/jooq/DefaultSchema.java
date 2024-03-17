@@ -3,16 +3,12 @@
  */
 package edu.java.scrapper.domain.jooq;
 
-
 import edu.java.scrapper.domain.jooq.tables.Chat;
 import edu.java.scrapper.domain.jooq.tables.ChatLink;
 import edu.java.scrapper.domain.jooq.tables.Link;
-
 import java.util.Arrays;
 import java.util.List;
-
 import javax.annotation.processing.Generated;
-
 import org.jetbrains.annotations.NotNull;
 import org.jooq.Catalog;
 import org.jooq.Table;

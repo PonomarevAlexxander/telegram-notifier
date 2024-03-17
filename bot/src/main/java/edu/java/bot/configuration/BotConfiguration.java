@@ -7,12 +7,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.client.RestClient;
 
 @Configuration
 @RequiredArgsConstructor
 public class BotConfiguration {
-    private final WebClient.Builder builder;
+    private final RestClient.Builder builder;
 
     @Bean
     public ScrapperClient scrapperClient(ApplicationConfig config) {

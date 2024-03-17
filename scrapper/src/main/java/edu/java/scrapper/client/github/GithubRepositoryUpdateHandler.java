@@ -29,10 +29,14 @@ public class GithubRepositoryUpdateHandler implements UpdateHandler {
         if (repository.lastUpdated().isAfter(lastUpdated)) {
             List<String> commits =
                 client.getRepositoryCommitsSince(user, repo, DateTimeFormatter.ISO_INSTANT.format(lastUpdated)).stream()
-                    .map(commitsListItem -> commitsListItem.commit().message())
+                    .map(commitsListItem -> String.format("Commit: %s", commitsListItem.commit().message()))
                     .toList();
 
-            return new LinkUpdate(link, true, String.format("repository has some new commits: %s", commits));
+            return new LinkUpdate(
+                link,
+                true,
+                String.format("Repository has some new commits:\n\n%s\n", String.join("\n\n", commits))
+            );
         }
         return new LinkUpdate(link, false, "");
     }

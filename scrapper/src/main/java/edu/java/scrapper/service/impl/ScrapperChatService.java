@@ -3,11 +3,10 @@ package edu.java.scrapper.service.impl;
 import edu.java.scrapper.domain.Chat;
 import edu.java.scrapper.repository.ChatRepository;
 import edu.java.scrapper.service.ChatService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
 @RequiredArgsConstructor
 public class ScrapperChatService implements ChatService {
     private final ChatRepository chatRepository;
@@ -22,5 +21,10 @@ public class ScrapperChatService implements ChatService {
     @Transactional
     public void delete(Long chatId) {
         chatRepository.delete(chatId);
+    }
+
+    @Override
+    public List<Chat> getAllByUrl(String uri) {
+        return chatRepository.getAllByUrl(uri);
     }
 }

@@ -1,7 +1,7 @@
 app:
   scheduler:
     enable: true
-    interval: "PT10M"
+    interval: "PT30S"
     force-check-delay: "PT30M"
   stack-overflow-client:
     base-url: "https://api.stackexchange.com"
@@ -9,6 +9,7 @@ app:
     base-url: "https://api.github.com"
   bot-client:
     base-url: "http://localhost:8090"
+  database-access-type: jpa
 
 spring:
   application:
@@ -22,6 +23,8 @@ spring:
     enabled: false
   jooq:
     sql-dialect: Postgres
+  jpa:
+    show-sql: true
 
 springdoc:
   api-docs:
