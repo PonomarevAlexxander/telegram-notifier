@@ -21,5 +21,9 @@ public class MarkdownParser {
     public static String italic(String text) {
         return "_" + text + "_";
     }
+
+    public static String link(String text, String url) {
+        return String.format("[%s](%s)", text, url);
+    }
 }
 

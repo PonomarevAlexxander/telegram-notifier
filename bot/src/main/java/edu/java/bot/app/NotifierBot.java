@@ -7,6 +7,7 @@ import com.pengrad.telegrambot.model.BotCommand;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.BaseRequest;
 import com.pengrad.telegrambot.request.DeleteMyCommands;
+import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SetMyCommands;
 import com.pengrad.telegrambot.response.BaseResponse;
 import edu.java.bot.command.Command;
@@ -55,7 +56,8 @@ public class NotifierBot implements Bot {
     @Override
     public int process(List<Update> updates) {
         for (var update : updates) {
-            var request = service.process(update);
+            SendMessage request;
+            request = service.process(update);
             execute(request);
         }
         return UpdatesListener.CONFIRMED_UPDATES_ALL;

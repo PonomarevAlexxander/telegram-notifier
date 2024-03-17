@@ -39,16 +39,12 @@ public class TrackCmd implements Command {
         if (matcher.find()) {
             String link = matcher.group("link");
             if (!LinkValidator.isValid(link)) {
-                return new SendMessage(chatId, "You have sent invalid link");
+                return new SendMessage(chatId, "You have sent invalid link!");
             }
 
             URI uri = URI.create(link);
-//            Link resource = new Link()
-//            if (service.isSupported(resource)) {
-//                service.trackLink(resource);
-//                return new SendMessage(chatId, "You have successfully subscribed to new resource!");
-//            }
-            return new SendMessage(chatId, String.format("Sorry, %s is currently not supported :(", uri.getHost()));
+            service.trackLink(chatId, uri);
+            return new SendMessage(chatId, String.format("Link %s was successfully added!", uri));
         }
 
         return new SendMessage(chatId, "You have sent invalid command, see /help");

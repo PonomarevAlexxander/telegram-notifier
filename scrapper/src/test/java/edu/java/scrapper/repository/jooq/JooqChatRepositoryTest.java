@@ -6,9 +6,6 @@ import edu.java.scrapper.domain.Link;
 import edu.java.scrapper.domain.TrackRecord;
 import edu.java.scrapper.exception.ResourceAlreadyExistException;
 import edu.java.scrapper.exception.ResourceNotExistException;
-import edu.java.scrapper.repository.jdbc.JdbcChatRepository;
-import edu.java.scrapper.repository.jdbc.JdbcLinkRepository;
-import edu.java.scrapper.repository.jdbc.JdbcTrackRepository;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -17,11 +14,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 @SpringBootTest
+@TestPropertySource(properties = "app.database-access-type=jooq")
 class JooqChatRepositoryTest extends IntegrationTest {
     @Autowired
     JooqChatRepository chatRepository;

@@ -10,7 +10,7 @@ public interface StackOverflowClient {
     StackOverflowAnswersResponse getAllByQuestion(@PathVariable Long id);
 
     @GetExchange(
-        "/2.3/questions/{id}/answers?order=desc&sort=activity&site=stackoverflow&fromdate={epochSecond}&filter=withbody"
+        "/2.3/questions/{id}/answers?order=desc&sort=activity&site=stackoverflow&fromdate={epochSecond}&filter=!6WPIomp1bT*YI"
     )
     StackOverflowAnswersResponse getAllByQuestionFromDate(@PathVariable Long id, @PathVariable Long epochSecond);
 }

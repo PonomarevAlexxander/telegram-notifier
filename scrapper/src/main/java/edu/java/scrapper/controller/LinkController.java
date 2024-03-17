@@ -24,7 +24,7 @@ public class LinkController {
 
     @GetMapping
     public LinksResponse getAllTracked(@Positive @RequestHeader("Tg-Chat-Id") Long chatId) {
-        List<LinkDTO> links = service.getAll(chatId);
+        List<LinkDTO> links = service.getAllByChatId(chatId);
         return new LinksResponse(links, links.size());
     }
 

@@ -8,7 +8,11 @@ public record StackOverflowAnswer(
     OffsetDateTime lastActivity,
     @JsonProperty("answer_id")
     String answerId,
-    @JsonProperty("body")
-    String message
+    @JsonProperty("body_markdown")
+    String message,
+    @JsonProperty("title")
+    String questionTitle,
+    @JsonProperty("owner")
+    StackOverflowUser owner
 ) {
 }

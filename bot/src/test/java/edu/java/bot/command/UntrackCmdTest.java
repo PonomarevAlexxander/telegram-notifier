@@ -12,12 +12,13 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @ExtendWith(MockitoExtension.class)
 class UntrackCmdTest {
-    @Mock LinkService service;
-    Command command = new UntrackCmd(service);
+    @Mock
+    LinkService service;
 
     @Test
     @DisplayName("Test command()")
     void command() {
+        Command command = new UntrackCmd(service);
         assertThat(command.command())
             .isNotBlank()
             .contains("/untrack");
@@ -26,6 +27,7 @@ class UntrackCmdTest {
     @Test
     @DisplayName("Test description()")
     void description() {
+        Command command = new UntrackCmd(service);
         assertThat(command.description())
             .isNotBlank();
     }
@@ -33,6 +35,7 @@ class UntrackCmdTest {
     @Test
     @DisplayName("Test handle() on used chat_id")
     void handle() {
+        Command command = new UntrackCmd(service);
         Update update = Mockito.mock(Update.class, Mockito.RETURNS_DEEP_STUBS);
         Mockito.when(update.message().chat().id()).thenReturn(1L);
         Mockito.when(update.message().text()).thenReturn("/untrack invalidlink");
@@ -43,6 +46,7 @@ class UntrackCmdTest {
     @Test
     @DisplayName("Test handle() with invalid link")
     void handle_invalid() {
+        Command command = new UntrackCmd(service);
         Update update = Mockito.mock(Update.class, Mockito.RETURNS_DEEP_STUBS);
         Mockito.when(update.message().chat().id()).thenReturn(1L);
         Mockito.when(update.message().text()).thenReturn("/untrack invalidlink");

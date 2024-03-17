@@ -6,13 +6,10 @@ import edu.java.scrapper.exception.ResourceNotExistException;
 import edu.java.scrapper.repository.TrackRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Primary;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
 
-@Repository
-@Primary
 @RequiredArgsConstructor
 @SuppressWarnings("IllegalIdentifierName")
 public class JdbcTrackRepository implements TrackRepository {
@@ -28,6 +25,14 @@ public class JdbcTrackRepository implements TrackRepository {
             throw new ResourceAlreadyExistException(
                 String.format("User with chat id %d already tracks link %d", record.getChatId(), record.getLinkId()),
                 e
+            );
+        } catch (DataIntegrityViolationException e) {
+            throw new ResourceNotExistException(
+                String.format(
+                    "There is no chat with id %d or link with id %d",
+                    record.getChatId(),
+                    record.getLinkId()
+                ), e
             );
         }
     }

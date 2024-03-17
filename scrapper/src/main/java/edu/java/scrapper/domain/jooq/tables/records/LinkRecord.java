@@ -3,16 +3,11 @@
  */
 package edu.java.scrapper.domain.jooq.tables.records;
 
-
 import edu.java.scrapper.domain.jooq.tables.Link;
-
 import jakarta.validation.constraints.Size;
-
 import java.beans.ConstructorProperties;
 import java.time.OffsetDateTime;
-
 import javax.annotation.processing.Generated;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jooq.Field;
