@@ -1,10 +1,11 @@
 package edu.java.scrapper.controller;
 
 import edu.java.scrapper.controller.dto.LinkRequest;
-import edu.java.scrapper.controller.dto.LinkResponse;
 import edu.java.scrapper.controller.dto.LinksResponse;
-import edu.java.scrapper.domain.Link;
+import edu.java.scrapper.dto.LinkDTO;
 import edu.java.scrapper.service.LinkService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,19 +23,23 @@ public class LinkController {
     private final LinkService service;
 
     @GetMapping
-    public LinksResponse getAllTracked(@RequestHeader("Tg-Chat-Id") Long chatId) {
-        List<Link> links = service.getAll(chatId);
-        return LinksResponse.fromLinks(links);
+    public LinksResponse getAllTracked(@Positive @RequestHeader("Tg-Chat-Id") Long chatId) {
+        List<LinkDTO> links = service.getAll(chatId);
+        return new LinksResponse(links, links.size());
     }
 
     @PostMapping
-    public LinkResponse trackNew(@RequestHeader("Tg-Chat-Id") Long chatId, @RequestBody LinkRequest link) {
-//        Link newLink = service.trackNew(chatId, link.url());
-        return new LinkResponse(1L, "");
+    public LinkDTO trackNew(@Positive @RequestHeader("Tg-Chat-Id") Long chatId, @Valid @RequestBody LinkRequest link) {
+        Long id = service.trackNew(chatId, link.url());
+        return new LinkDTO(id, link.url());
     }
 
     @DeleteMapping
-    public LinkResponse untrackLink(@RequestHeader("Tg-Chat-Id") Long chatId, @RequestBody LinkRequest link) {
-        return new LinkResponse(1L, "");
+    public LinkDTO untrackLink(
+        @Positive @RequestHeader("Tg-Chat-Id") Long chatId,
+        @Valid @RequestBody LinkRequest link
+    ) {
+        Long id = service.untrack(chatId, link.url());
+        return new LinkDTO(id, link.url());
     }
 }

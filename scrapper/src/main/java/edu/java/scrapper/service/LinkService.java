@@ -1,12 +1,12 @@
 package edu.java.scrapper.service;
 
-import edu.java.scrapper.domain.Link;
+import edu.java.scrapper.dto.LinkDTO;
 import java.util.List;
 
 public interface LinkService {
-    List<Link> getAll(Long chatId);
+    List<LinkDTO> getAll(Long chatId);
 
-    Link trackNew(Long chatId, String url);
+    Long trackNew(Long chatId, String url);
 
-    Link untrack(Long chatId, String url);
+    Long untrack(Long chatId, String url);
 }

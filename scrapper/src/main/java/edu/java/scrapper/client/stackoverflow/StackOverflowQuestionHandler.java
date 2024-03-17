@@ -4,7 +4,6 @@ import edu.java.scrapper.client.UpdateHandler;
 import edu.java.scrapper.client.stackoverflow.dto.StackOverflowAnswersResponse;
 import edu.java.scrapper.domain.Link;
 import edu.java.scrapper.domain.LinkUpdate;
-import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,8 +18,8 @@ public class StackOverflowQuestionHandler implements UpdateHandler {
 
     @Override
     public LinkUpdate getUpdate(Link link) {
-        String id = getQuestionId(link.resource().toString());
-        OffsetDateTime lastUpdated = link.lastTracked();
+        String id = getQuestionId(link.getUri().toString());
+        OffsetDateTime lastUpdated = link.getLastTracked();
         StackOverflowAnswersResponse allByQuestion =
             client.getAllByQuestionFromDate(Long.parseLong(id), lastUpdated.toEpochSecond());
         if (!allByQuestion.answers().isEmpty()) {
@@ -30,8 +29,8 @@ public class StackOverflowQuestionHandler implements UpdateHandler {
     }
 
     @Override
-    public boolean supports(URI link) {
-        return pattern.matcher(link.toString()).find();
+    public boolean supports(String link) {
+        return pattern.matcher(link).find();
     }
 
     private String getQuestionId(String uri) {
