@@ -1,0 +1,45 @@
+services:
+  postgres:
+    image: postgres:16
+    ports:
+      - "5432:5432"
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: scrapper
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "scrapper", "-U", "postgres" ]
+      timeout: 20s
+      interval: 10s
+      retries: 10
+    networks:
+      - backend
+
+  migration:
+    image: liquibase/liquibase:4.25
+    container_name: liquibase
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command:
+      - --changelog-file=master.xml
+      - --search-path=/liquibase/changelog/
+      - --driver=org.postgresql.Driver
+      - --url=jdbc:postgresql://postgres:5432/scrapper
+      - --username=postgres
+      - --password=postgres
+      - update
+    volumes:
+      - ./migrations/:/liquibase/changelog/
+    networks:
+      - backend
+
+volumes:
+  postgres: { }
+
+networks:
+  backend: { }

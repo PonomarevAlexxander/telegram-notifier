@@ -5,5 +5,5 @@ package edu.java.scrapper.domain;
  *
  * @author Alexander Ponomarev
  */
-public record TrackRecord(Long id, Long userId, Long linkId) {
+public record TrackRecord(Long chatId, Long linkId) {
 }
