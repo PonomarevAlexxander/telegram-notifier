@@ -2,11 +2,16 @@ package edu.java.scrapper.domain;
 
 import java.net.URI;
 import java.time.OffsetDateTime;
+import lombok.Data;
 
 /**
  * Tracked link
  *
  * @author Alexander Ponomarev
  */
-public record Link(Long id, URI resource, OffsetDateTime lastTracked) {
+@Data
+public class Link {
+    private final Long id;
+    private final URI uri;
+    private final OffsetDateTime lastTracked;
 }

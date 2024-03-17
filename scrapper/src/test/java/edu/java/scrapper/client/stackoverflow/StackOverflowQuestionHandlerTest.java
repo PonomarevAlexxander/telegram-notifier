@@ -88,7 +88,7 @@ class StackOverflowQuestionHandlerTest {
         "https://stackoverflow.com/answers/some-other-kebab, false",
     })
     @DisplayName("Test supports() on different links")
-    void supports(URI link, boolean supports) {
+    void supports(String link, boolean supports) {
         StackOverflowClient client = Mockito.mock(StackOverflowClient.class);
         StackOverflowQuestionHandler handler = new StackOverflowQuestionHandler(client);
 
