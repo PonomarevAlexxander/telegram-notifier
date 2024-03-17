@@ -1,10 +1,10 @@
 package edu.java.scrapper.client.github;
 
 import edu.java.scrapper.client.github.dto.Repository;
-import java.net.URI;
-import java.time.OffsetDateTime;
 import edu.java.scrapper.domain.Link;
 import edu.java.scrapper.domain.LinkUpdate;
+import java.net.URI;
+import java.time.OffsetDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -77,7 +77,7 @@ class GithubRepositoryUpdateHandlerTest {
         "https://github.com/NotValid/repos/issues, false"
     })
     @DisplayName("Test supports() on different links")
-    void supports(URI link, boolean supports) {
+    void supports(String link, boolean supports) {
         GithubClient client = Mockito.mock(GithubClient.class);
         GithubRepositoryUpdateHandler handler = new GithubRepositoryUpdateHandler(client);
 

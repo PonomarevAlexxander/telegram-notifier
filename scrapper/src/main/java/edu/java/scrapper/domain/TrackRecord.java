@@ -1,9 +1,14 @@
 package edu.java.scrapper.domain;
 
+import lombok.Data;
+
 /**
- * User - track link relation record
+ * User - link relation record
  *
  * @author Alexander Ponomarev
  */
-public record TrackRecord(Long chatId, Long linkId) {
+@Data
+public class TrackRecord {
+    private final Long chatId;
+    private final Long linkId;
 }
