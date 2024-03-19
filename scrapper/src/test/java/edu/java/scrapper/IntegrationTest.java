@@ -18,6 +18,7 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.JdbcDatabaseContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
@@ -28,9 +29,9 @@ public abstract class IntegrationTest {
         POSTGRES = new PostgreSQLContainer<>("postgres:16")
             .withDatabaseName("scrapper")
             .withUsername("postgres")
-            .withPassword("postgres");
+            .withPassword("postgres")
+            .waitingFor(Wait.forListeningPort());
         POSTGRES.start();
-
         runMigrations(POSTGRES);
     }
 
@@ -43,9 +44,9 @@ public abstract class IntegrationTest {
     }
 
     private static void runMigrations(JdbcDatabaseContainer<?> c) {
-        try (Connection connection = getConnection(c)) {
-            Database database = DatabaseFactory.getInstance()
-                .findCorrectDatabaseImplementation(new JdbcConnection(connection));
+        try (Connection connection = getConnection(c);
+             Database database = DatabaseFactory.getInstance()
+                 .findCorrectDatabaseImplementation(new JdbcConnection(connection))) {
             Path changelogDir = new File(".").toPath()
                 .toAbsolutePath()
                 .getParent()
