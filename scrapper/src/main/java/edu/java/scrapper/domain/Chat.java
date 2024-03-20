@@ -1,4 +1,8 @@
 package edu.java.scrapper.domain;
 
-public record Chat(Long id) {
+import lombok.Data;
+
+@Data
+public class Chat {
+    private final Long id;
 }

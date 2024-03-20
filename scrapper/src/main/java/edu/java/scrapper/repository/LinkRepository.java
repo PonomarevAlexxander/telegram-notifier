@@ -1,6 +1,7 @@
 package edu.java.scrapper.repository;
 
 import edu.java.scrapper.domain.Link;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
@@ -9,9 +10,21 @@ import java.util.List;
  * @author Alexander Ponomarev
  */
 public interface LinkRepository {
+    /**
+     * Adds new link
+     * @return new link id if created
+     */
+    Long add(Link link);
+
+    void delete(Long id);
+
+    Link getByUri(String uri);
+
+    List<Link> getAll();
+
     List<Link> getAllLByChatId(Long chatId);
 
-    Long insert(Link link);
+    List<Link> getAllBefore(OffsetDateTime time);
 
-    Long delete(Link link);
+    void updateLastTrackedTime(List<Long> linkIds, OffsetDateTime time);
 }

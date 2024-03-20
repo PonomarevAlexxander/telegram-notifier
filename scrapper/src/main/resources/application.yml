@@ -1,8 +1,8 @@
 app:
   scheduler:
     enable: true
-    interval: "PT10S"
-    force-check-delay: "PT10S"
+    interval: "PT10M"
+    force-check-delay: "PT30M"
   stack-overflow-client:
     base-url: "https://api.stackexchange.com"
   github-client:
@@ -13,6 +13,13 @@ app:
 spring:
   application:
     name: scrapper
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: postgres
+    url: jdbc:postgresql://localhost:5432/scrapper
+  liquibase:
+    enabled: false
 
 springdoc:
   api-docs:

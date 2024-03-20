@@ -4,7 +4,6 @@ import edu.java.scrapper.client.UpdateHandler;
 import edu.java.scrapper.client.github.dto.Repository;
 import edu.java.scrapper.domain.Link;
 import edu.java.scrapper.domain.LinkUpdate;
-import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,12 +18,12 @@ public class GithubRepositoryUpdateHandler implements UpdateHandler {
 
     @Override
     public LinkUpdate getUpdate(Link link) {
-        String uri = link.resource().toString();
+        String uri = link.getUri().toString();
         String user = getUser(uri);
         String repo = getRepository(uri);
 
         Repository repository = client.getRepository(user, repo);
-        OffsetDateTime lastUpdated = link.lastTracked();
+        OffsetDateTime lastUpdated = link.getLastTracked();
         if (repository.lastUpdated().isAfter(lastUpdated)) {
             return new LinkUpdate(link, true, "repository has some new changes");
         }
@@ -32,8 +31,8 @@ public class GithubRepositoryUpdateHandler implements UpdateHandler {
     }
 
     @Override
-    public boolean supports(URI link) {
-        return pattern.matcher(link.toString()).find();
+    public boolean supports(String link) {
+        return pattern.matcher(link).find();
     }
 
     private String getUser(String uri) {
