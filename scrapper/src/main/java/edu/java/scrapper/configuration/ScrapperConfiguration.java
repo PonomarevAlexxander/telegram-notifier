@@ -11,6 +11,9 @@ import edu.java.scrapper.domain.Link;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import lombok.RequiredArgsConstructor;
+import org.jooq.conf.RenderQuotedNames;
+import org.jooq.impl.DefaultConfiguration;
+import org.springframework.boot.autoconfigure.jooq.DefaultConfigurationCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.RowMapper;
@@ -50,4 +53,13 @@ public class ScrapperConfiguration {
             rs.getObject(3, OffsetDateTime.class)
         );
     }
+
+    @Bean
+    public DefaultConfigurationCustomizer postgresJooqCustomizer() {
+        return (DefaultConfiguration c) -> c.settings()
+            .withRenderSchema(false)
+            .withRenderFormatted(true)
+            .withRenderQuotedNames(RenderQuotedNames.NEVER);
+    }
+
 }

@@ -4,6 +4,7 @@ import edu.java.scrapper.domain.Chat;
 import edu.java.scrapper.domain.jooq.tables.ChatLink;
 import edu.java.scrapper.domain.jooq.tables.Link;
 import edu.java.scrapper.domain.jooq.tables.records.ChatRecord;
+import edu.java.scrapper.exception.ResourceAlreadyExistException;
 import edu.java.scrapper.exception.ResourceNotExistException;
 import edu.java.scrapper.repository.ChatRepository;
 import java.util.List;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Repository;
 import static edu.java.scrapper.domain.jooq.tables.Chat.CHAT;
 
@@ -24,7 +26,11 @@ public class JooqChatRepository implements ChatRepository {
     public void add(Chat chat) {
         ChatRecord chatRecord = create.newRecord(CHAT);
         chatRecord.setId(chat.getId());
-        chatRecord.store();
+        try {
+            chatRecord.store();
+        } catch (DuplicateKeyException e) {
+            throw new ResourceAlreadyExistException(String.format("Chat %d already exist", chat.getId()), e);
+        }
     }
 
     @Override

@@ -3,6 +3,7 @@ package edu.java.scrapper.repository.jooq;
 import edu.java.scrapper.domain.Link;
 import edu.java.scrapper.domain.jooq.tables.ChatLink;
 import edu.java.scrapper.domain.jooq.tables.records.LinkRecord;
+import edu.java.scrapper.exception.ResourceAlreadyExistException;
 import edu.java.scrapper.exception.ResourceNotExistException;
 import edu.java.scrapper.repository.LinkRepository;
 import java.net.URI;
@@ -13,6 +14,7 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
 import org.jooq.Result;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Repository;
 import static edu.java.scrapper.domain.jooq.tables.Link.LINK;
 
@@ -32,7 +34,14 @@ public class JooqLinkRepository implements LinkRepository {
         LinkRecord linkRecord = create.newRecord(LINK);
         linkRecord.setUrl(link.getUri().toString());
         linkRecord.setLastTracked(link.getLastTracked());
-        linkRecord.store();
+        try {
+            linkRecord.store();
+        } catch (DuplicateKeyException e) {
+            throw new ResourceAlreadyExistException(String.format(
+                "Link with url '%s' already exist",
+                link.getUri().toString()
+            ), e);
+        }
         return linkRecord.getId().longValue();
     }
 
@@ -49,8 +58,15 @@ public class JooqLinkRepository implements LinkRepository {
 
     @Override
     public Link getByUri(String uri) {
-        return create.fetchOne(LINK, LINK.URL.eq(uri))
-            .map(mapper);
+        LinkRecord linkRecord = create.fetchOne(LINK, LINK.URL.eq(uri));
+        if (linkRecord == null) {
+            throw new ResourceNotExistException(String.format(
+                "Link with url '%s' not exist",
+                uri
+            ));
+        }
+
+        return linkRecord.map(mapper);
     }
 
     @Override
