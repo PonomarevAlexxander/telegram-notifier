@@ -5,6 +5,10 @@ import java.time.OffsetDateTime;
 
 public record StackOverflowAnswer(
     @JsonProperty("last_activity_date")
-    OffsetDateTime lastActivity
+    OffsetDateTime lastActivity,
+    @JsonProperty("answer_id")
+    String answerId,
+    @JsonProperty("body")
+    String message
 ) {
 }

@@ -1,29 +1,32 @@
-package edu.java.scrapper.repository.jdbc;
+package edu.java.scrapper.repository.jooq;
 
 import edu.java.scrapper.domain.TrackRecord;
+import edu.java.scrapper.domain.jooq.tables.ChatLink;
+import edu.java.scrapper.domain.jooq.tables.records.ChatLinkRecord;
 import edu.java.scrapper.exception.ResourceAlreadyExistException;
 import edu.java.scrapper.exception.ResourceNotExistException;
 import edu.java.scrapper.repository.TrackRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Primary;
+import org.jooq.DSLContext;
+import org.jooq.Record;
+import org.jooq.Result;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@Primary
 @RequiredArgsConstructor
 @SuppressWarnings("IllegalIdentifierName")
-public class JdbcTrackRepository implements TrackRepository {
-    private final JdbcTemplate jdbcTemplate;
+public class JooqTrackRepository implements TrackRepository {
+    private final DSLContext create;
 
     @Override
     public void add(TrackRecord record) {
+        ChatLinkRecord chatLinkRecord = create.newRecord(ChatLink.CHAT_LINK);
+        chatLinkRecord.setChatId(record.getChatId());
+        chatLinkRecord.setLinkId(record.getLinkId().intValue());
         try {
-            jdbcTemplate.update("insert into chat_link (chat_id, link_id) values (?, ?)",
-                record.getChatId(), record.getLinkId()
-            );
+            chatLinkRecord.store();
         } catch (DuplicateKeyException e) {
             throw new ResourceAlreadyExistException(
                 String.format("User with chat id %d already tracks link %d", record.getChatId(), record.getLinkId()),
@@ -34,9 +37,11 @@ public class JdbcTrackRepository implements TrackRepository {
 
     @Override
     public void delete(TrackRecord record) {
-        int affected = jdbcTemplate.update("delete from chat_link where chat_id = ? and link_id = ?",
-            record.getChatId(), record.getLinkId()
-        );
+        int affected = create.delete(ChatLink.CHAT_LINK)
+            .where(ChatLink.CHAT_LINK.CHAT_ID.eq(record.getChatId())
+                .and(ChatLink.CHAT_LINK.LINK_ID.eq(record.getLinkId().intValue())))
+            .execute();
+
         if (affected == 0) {
             throw new ResourceNotExistException(
                 String.format(
@@ -50,9 +55,12 @@ public class JdbcTrackRepository implements TrackRepository {
 
     @Override
     public List<TrackRecord> getAll() {
-        return jdbcTemplate.query(
-            "select * from chat_link",
-            (rs, rowNum) -> new TrackRecord(rs.getLong(1), rs.getLong(2))
-        );
+        Result<Record> chats = create.select()
+            .from(ChatLink.CHAT_LINK)
+            .fetch();
+        return chats.map(record -> new TrackRecord(
+            record.get(ChatLink.CHAT_LINK.CHAT_ID),
+            record.get(ChatLink.CHAT_LINK.LINK_ID).longValue()
+        ));
     }
 }

@@ -48,6 +48,7 @@
     <modules>
         <module>bot</module>
         <module>scrapper</module>
+        <module>scrapper-jooq</module>
     </modules>
 
     <dependencyManagement>
@@ -287,6 +288,8 @@
                         <consoleOutput>true</consoleOutput>
                         <logViolationsToConsole>true</logViolationsToConsole>
                         <failsOnError>true</failsOnError>
+                        <excludes>**/edu/java/JooqCodegen.java</excludes>
+                        <excludes>**/scrapper/domain/jooq/**</excludes>
                     </configuration>
                 </plugin>
             </plugins>
