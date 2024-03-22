@@ -3,6 +3,7 @@ package edu.java.scrapper.repository.jooq;
 import edu.java.scrapper.domain.TrackRecord;
 import edu.java.scrapper.domain.jooq.tables.ChatLink;
 import edu.java.scrapper.domain.jooq.tables.records.ChatLinkRecord;
+import edu.java.scrapper.exception.ResourceAlreadyExistException;
 import edu.java.scrapper.exception.ResourceNotExistException;
 import edu.java.scrapper.repository.TrackRepository;
 import java.util.List;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -23,7 +25,14 @@ public class JooqTrackRepository implements TrackRepository {
         ChatLinkRecord chatLinkRecord = create.newRecord(ChatLink.CHAT_LINK);
         chatLinkRecord.setChatId(record.getChatId());
         chatLinkRecord.setLinkId(record.getLinkId().intValue());
-        chatLinkRecord.store();
+        try {
+            chatLinkRecord.store();
+        } catch (DuplicateKeyException e) {
+            throw new ResourceAlreadyExistException(
+                String.format("User with chat id %d already tracks link %d", record.getChatId(), record.getLinkId()),
+                e
+            );
+        }
     }
 
     @Override
