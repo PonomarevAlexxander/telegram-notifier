@@ -1,7 +1,7 @@
 app:
   scheduler:
     enable: true
-    interval: "PT10M"
+    interval: "PT30S"
     force-check-delay: "PT30M"
   stack-overflow-client:
     base-url: "https://api.stackexchange.com"
