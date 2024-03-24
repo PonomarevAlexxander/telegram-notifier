@@ -1,6 +1,7 @@
 package edu.java.scrapper.client.stackoverflow;
 
 import edu.java.scrapper.client.UpdateHandler;
+import edu.java.scrapper.client.stackoverflow.dto.StackOverflowAnswer;
 import edu.java.scrapper.client.stackoverflow.dto.StackOverflowAnswersResponse;
 import edu.java.scrapper.domain.Link;
 import edu.java.scrapper.domain.LinkUpdate;
@@ -10,6 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.HtmlUtils;
 
 @Component
 @RequiredArgsConstructor
@@ -23,12 +25,29 @@ public class StackOverflowQuestionHandler implements UpdateHandler {
         OffsetDateTime lastUpdated = link.getLastTracked();
         StackOverflowAnswersResponse allByQuestion =
             client.getAllByQuestionFromDate(Long.parseLong(id), lastUpdated.toEpochSecond());
-        if (!allByQuestion.answers().isEmpty()) {
-            List<String> answers = allByQuestion.answers().stream()
-                .map(answer -> String.format("Answer #%s \"%s\".", answer.answerId(), answer.message()))
+        List<StackOverflowAnswer> answerList = allByQuestion.answers();
+        if (!answerList.isEmpty()) {
+            String title = answerList.getFirst().questionTitle();
+
+            List<String> answers = answerList.stream()
+                .map(answer -> String.format(
+                    "Answer by %s:\n%s",
+                    answer.owner().name(),
+                    HtmlUtils.htmlUnescape(answer.message())
+                ))
+                .limit(2)
                 .toList();
 
-            return new LinkUpdate(link, true, String.format("Some answers have been modified: %s", answers));
+            return new LinkUpdate(
+                link,
+                true,
+                String.format(
+                    "%d new answers on question '%s':\n\n%s\n...",
+                    answerList.size(),
+                    HtmlUtils.htmlUnescape(title),
+                    String.join("\n\n", answers)
+                )
+            );
         }
         return new LinkUpdate(link, false, "");
     }

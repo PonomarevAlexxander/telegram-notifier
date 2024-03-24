@@ -3,17 +3,13 @@
  */
 package edu.java.scrapper.domain.jooq.tables;
 
-
 import edu.java.scrapper.domain.jooq.DefaultSchema;
 import edu.java.scrapper.domain.jooq.Keys;
 import edu.java.scrapper.domain.jooq.tables.records.ChatLinkRecord;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
-
 import javax.annotation.processing.Generated;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jooq.Field;

@@ -14,13 +14,9 @@ import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
 @RequiredArgsConstructor
-@Slf4j
 public class ScrapperLinkService implements LinkService {
     private final LinkRepository linkRepository;
     private final TrackRepository trackRepository;
@@ -29,7 +25,7 @@ public class ScrapperLinkService implements LinkService {
 
     @Override
     @Transactional
-    public List<LinkDTO> getAll(Long chatId) {
+    public List<LinkDTO> getAllByChatId(Long chatId) {
         return linkRepository.getAllLByChatId(chatId).stream()
             .map(link -> new LinkDTO(link.getId(), link.getUri().toString()))
             .toList();
@@ -63,5 +59,15 @@ public class ScrapperLinkService implements LinkService {
             linkRepository.delete(linkId);
         }
         return linkId;
+    }
+
+    @Override
+    public List<Link> getAllBefore(OffsetDateTime time) {
+        return linkRepository.getAllBefore(time);
+    }
+
+    @Override
+    public void updateLastTrackedTime(List<Long> ids, OffsetDateTime time) {
+        linkRepository.updateLastTrackedTime(ids, time);
     }
 }

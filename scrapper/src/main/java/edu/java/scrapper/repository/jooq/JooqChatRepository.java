@@ -13,10 +13,8 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.stereotype.Repository;
 import static edu.java.scrapper.domain.jooq.tables.Chat.CHAT;
 
-@Repository
 @RequiredArgsConstructor
 @SuppressWarnings("IllegalIdentifierName")
 public class JooqChatRepository implements ChatRepository {

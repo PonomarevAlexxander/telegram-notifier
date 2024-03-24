@@ -3,17 +3,18 @@ package edu.java.bot.command;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.request.SendMessage;
+import edu.java.bot.domain.Chat;
 import edu.java.bot.parser.MarkdownParser;
-import edu.java.bot.service.UserService;
+import edu.java.bot.service.ChatService;
 import org.springframework.stereotype.Component;
 
 @Component
 public class StartCmd implements Command {
-    private final UserService service;
+    private final ChatService service;
     private final String answer =
         "You have successfully started using " + MarkdownParser.bold("Notify bot") + "\\! Enjoy it\\!";
 
-    public StartCmd(UserService service) {
+    public StartCmd(ChatService service) {
         this.service = service;
     }
 
@@ -29,10 +30,10 @@ public class StartCmd implements Command {
 
     @Override
     public SendMessage handle(Update update) {
-        var fromUser = update.message().from();
-//        service.addUser(new User(fromUser.id(), update.message().chat().id(), fromUser.firstName()));
+        Long id = update.message().chat().id();
+        service.addChat(new Chat(id));
         return new SendMessage(
-            update.message().chat().id(),
+            id,
             answer
             ).parseMode(ParseMode.MarkdownV2);
     }

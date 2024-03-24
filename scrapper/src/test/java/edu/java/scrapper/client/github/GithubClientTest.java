@@ -5,7 +5,6 @@ import edu.java.scrapper.client.github.dto.CommitsListItem;
 import edu.java.scrapper.client.github.dto.Repository;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

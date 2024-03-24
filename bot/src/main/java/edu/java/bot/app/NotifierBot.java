@@ -7,8 +7,10 @@ import com.pengrad.telegrambot.model.BotCommand;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.BaseRequest;
 import com.pengrad.telegrambot.request.DeleteMyCommands;
+import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SetMyCommands;
 import com.pengrad.telegrambot.response.BaseResponse;
+import edu.java.bot.client.dto.ApiErrorResponse;
 import edu.java.bot.command.Command;
 import edu.java.bot.service.CommandService;
 import jakarta.annotation.PostConstruct;
@@ -16,6 +18,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientResponseException;
 
 @Component
 public class NotifierBot implements Bot {
@@ -55,7 +58,16 @@ public class NotifierBot implements Bot {
     @Override
     public int process(List<Update> updates) {
         for (var update : updates) {
-            var request = service.process(update);
+            SendMessage request;
+            try {
+                request = service.process(update);
+            } catch (RestClientResponseException e) {
+                ApiErrorResponse errorResponse = e.getResponseBodyAs(ApiErrorResponse.class);
+                request = new SendMessage(
+                    update.message().chat().id(),
+                    String.format("Operation failed with error: %s", errorResponse.exceptionMessage())
+                );
+            }
             execute(request);
         }
         return UpdatesListener.CONFIRMED_UPDATES_ALL;

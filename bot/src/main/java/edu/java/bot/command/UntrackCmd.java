@@ -43,8 +43,8 @@ public class UntrackCmd implements Command {
             }
 
             URI uri = URI.create(link);
-//            service.deleteLink(new Link(update.message().from().id(), URI.create("")));
-            return new SendMessage(chatId, "Link is not in your tracking list, see /list");
+            service.untrackLink(chatId, uri);
+            return new SendMessage(chatId, String.format("Link %s was removed from your track list", uri));
         }
 
         return new SendMessage(chatId, "You have sent invalid command, see /help");
