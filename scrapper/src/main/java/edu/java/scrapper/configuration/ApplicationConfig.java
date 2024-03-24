@@ -50,4 +50,10 @@ public record ApplicationConfig(
         JOOQ,
         JPA
     }
+
+    public enum AccessType {
+        JDBC,
+        JOOQ,
+        JPA
+    }
 }
