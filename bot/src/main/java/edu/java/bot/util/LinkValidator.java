@@ -4,7 +4,6 @@ import java.net.URL;
 
 public class LinkValidator {
     private LinkValidator() {
-
     }
 
     public static boolean isValid(String link) {

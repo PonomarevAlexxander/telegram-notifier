@@ -3,20 +3,18 @@ package edu.java.bot.service.notifier;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.command.Command;
+import edu.java.bot.exception.ClientExceptionHandler;
 import edu.java.bot.service.CommandService;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientResponseException;
 
 @Service
+@RequiredArgsConstructor
 public class NotifierCommandService implements CommandService {
     private final List<Command> commands;
-
-    public NotifierCommandService(List<Command> commands) {
-        if (commands == null) {
-            throw new IllegalArgumentException("commands can't be null");
-        }
-        this.commands = commands;
-    }
+    private final ClientExceptionHandler handler;
 
     @Override
     public List<Command> commands() {
@@ -27,7 +25,11 @@ public class NotifierCommandService implements CommandService {
     public SendMessage process(Update update) {
         for (var command : commands) {
             if (command.supports(update)) {
-                return command.handle(update);
+                try {
+                    return command.handle(update);
+                } catch (RestClientResponseException e) {
+                    return handler.onClientException(update, e);
+                }
             }
         }
         return new SendMessage(update.message().chat().id(), "Unsupported command :( Try /help");

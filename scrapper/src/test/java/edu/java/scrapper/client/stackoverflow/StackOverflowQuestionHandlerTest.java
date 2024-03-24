@@ -2,6 +2,7 @@ package edu.java.scrapper.client.stackoverflow;
 
 import edu.java.scrapper.client.stackoverflow.dto.StackOverflowAnswer;
 import edu.java.scrapper.client.stackoverflow.dto.StackOverflowAnswersResponse;
+import edu.java.scrapper.client.stackoverflow.dto.StackOverflowUser;
 import edu.java.scrapper.domain.Link;
 import edu.java.scrapper.domain.LinkUpdate;
 import java.net.URI;
@@ -24,8 +25,8 @@ class StackOverflowQuestionHandlerTest {
         StackOverflowClient client = Mockito.mock(StackOverflowClient.class);
         Mockito.when(client.getAllByQuestionFromDate(anyLong(), anyLong())).thenReturn(new StackOverflowAnswersResponse(
             List.of(
-                new StackOverflowAnswer(OffsetDateTime.now(), "", ""),
-                new StackOverflowAnswer(OffsetDateTime.now(), "", "")
+                new StackOverflowAnswer(OffsetDateTime.now(), "", "", "", new StackOverflowUser("")),
+                new StackOverflowAnswer(OffsetDateTime.now(), "", "", "", new StackOverflowUser(""))
             )));
         StackOverflowQuestionHandler handler = new StackOverflowQuestionHandler(client);
 

@@ -18,7 +18,9 @@ public record ApplicationConfig(
     @NotNull
     GithubClient githubClient,
     @NotNull
-    BotClient botClient
+    BotClient botClient,
+    @NotNull
+    AccessType databaseAccessType
 ) {
     public record Scheduler(boolean enable, @NotNull Duration interval, @NotNull Duration forceCheckDelay) {
     }
@@ -30,5 +32,11 @@ public record ApplicationConfig(
     }
 
     public record BotClient(@NotBlank String baseUrl) {
+    }
+
+    public enum AccessType {
+        JDBC,
+        JOOQ,
+        JPA
     }
 }

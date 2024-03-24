@@ -7,7 +7,9 @@ import edu.java.bot.client.dto.LinkResponse;
 import edu.java.bot.client.dto.LinksResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.http.client.JdkClientHttpRequestFactory;
+import org.springframework.web.client.RestClient;
+import java.net.http.HttpClient;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
@@ -22,7 +24,12 @@ import static wiremock.com.google.common.net.HttpHeaders.CONTENT_TYPE;
 
 @WireMockTest(httpPort = 8080)
 class ScrapperClientTest {
-    public ScrapperClient client = ScrapperClientBuilder.build(WebClient.builder(), "http://localhost:8080");
+    public ScrapperClient client = ScrapperClientBuilder.build(
+        RestClient.builder()
+            .requestFactory(new JdkClientHttpRequestFactory((HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_1_1).build()))),
+        "http://localhost:8080"
+    );
 
     @Test
     @DisplayName("Test if registerNewChat() satisfies API on success")

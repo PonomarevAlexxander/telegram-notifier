@@ -15,10 +15,8 @@ import org.jooq.Record;
 import org.jooq.RecordMapper;
 import org.jooq.Result;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.stereotype.Repository;
 import static edu.java.scrapper.domain.jooq.tables.Link.LINK;
 
-@Repository
 @RequiredArgsConstructor
 @SuppressWarnings("IllegalIdentifierName")
 public class JooqLinkRepository implements LinkRepository {

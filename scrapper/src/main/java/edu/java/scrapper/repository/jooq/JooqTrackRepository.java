@@ -12,9 +12,7 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.stereotype.Repository;
 
-@Repository
 @RequiredArgsConstructor
 @SuppressWarnings("IllegalIdentifierName")
 public class JooqTrackRepository implements TrackRepository {
