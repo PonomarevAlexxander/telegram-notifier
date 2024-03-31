@@ -1,5 +1,6 @@
 package edu.java.scrapper.exception;
 
+import com.giffing.bucket4j.spring.boot.starter.context.RateLimitException;
 import edu.java.scrapper.exception.dto.ApiErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -48,5 +49,11 @@ public class ControllerExceptionHandler {
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ApiErrorResponse notFoundHandler(Exception ex, WebRequest request) {
         return ApiErrorResponse.fromException(ex, request, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({RateLimitException.class})
+    @ResponseStatus(value = HttpStatus.TOO_MANY_REQUESTS)
+    protected ApiErrorResponse ratelimitHandler(Exception ex, WebRequest request) {
+        return ApiErrorResponse.fromException(ex, request, HttpStatus.TOO_MANY_REQUESTS);
     }
 }

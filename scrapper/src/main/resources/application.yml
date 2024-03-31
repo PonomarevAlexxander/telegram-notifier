@@ -5,10 +5,25 @@ app:
     force-check-delay: "PT30M"
   stack-overflow-client:
     base-url: "https://api.stackexchange.com"
+    retry:
+      codes: [ 408, 429, 502, 503, 504 ]
+      strategy: exponential
+      delay: 1s
+      max-attempts: 10
   github-client:
     base-url: "https://api.github.com"
+    retry:
+      codes: [ 408, 429, 502, 503, 504 ]
+      strategy: exponential
+      delay: 1s
+      max-attempts: 10
   bot-client:
     base-url: "http://localhost:8090"
+    retry:
+      codes: [ 408, 429, 502, 503, 504 ]
+      strategy: exponential
+      delay: 1s
+      max-attempts: 10
   database-access-type: jpa
 
 spring:
@@ -25,6 +40,13 @@ spring:
     sql-dialect: Postgres
   jpa:
     show-sql: true
+  cache:
+    jcache:
+      provider: com.github.benmanes.caffeine.jcache.spi.CaffeineCachingProvider
+    cache-names:
+      - buckets
+    caffeine:
+      spec: maximumSize=100000,expireAfterAccess=3600s
 
 springdoc:
   api-docs:
@@ -37,3 +59,18 @@ server:
 
 logging:
   config: classpath:log4j2-plain.xml
+
+bucket4j:
+  enabled: true
+  filters:
+  - cache-name: buckets
+    url: .*
+    strategy: first
+    rate-limits:
+    - cache-key: getRemoteAddr()
+      post-execute-condition: getStatus() eq 200
+      bandwidths:
+      - capacity: 100
+        time: 1
+        unit: hours
+        refill-speed: interval
