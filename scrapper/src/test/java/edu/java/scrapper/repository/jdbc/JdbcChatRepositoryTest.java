@@ -12,7 +12,10 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.cache.CacheType;
+import org.springframework.boot.test.autoconfigure.core.AutoConfigureCache;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +24,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 @SpringBootTest
 @TestPropertySource(properties = "app.database-access-type=jdbc")
+@DirtiesContext
 class JdbcChatRepositoryTest extends IntegrationTest {
     @Autowired
     private JdbcChatRepository chatRepository;
@@ -77,7 +81,6 @@ class JdbcChatRepositoryTest extends IntegrationTest {
         assertThatThrownBy(() -> chatRepository.delete(1L))
             .isInstanceOf(ResourceNotExistException.class);
     }
-
 
     @Test
     @Transactional
