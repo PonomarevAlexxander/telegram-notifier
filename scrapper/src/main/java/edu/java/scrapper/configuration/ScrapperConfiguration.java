@@ -17,8 +17,8 @@ import org.jooq.impl.DefaultConfiguration;
 import org.springframework.boot.autoconfigure.jooq.DefaultConfigurationCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.retry.backoff.BackOffPolicy;
 import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.backoff.FixedBackOffPolicy;
@@ -55,7 +55,6 @@ public class ScrapperConfiguration {
             .withRenderQuotedNames(RenderQuotedNames.NEVER);
     }
 
-
     @Bean
     public RowMapper<Chat> chatRowMapper() {
         return (rs, rowNum) -> new Chat(rs.getLong(1));
@@ -70,6 +69,7 @@ public class ScrapperConfiguration {
             rs.getObject(3, OffsetDateTime.class)
         );
     }
+
     @Bean
     public Set<HttpStatusCode> codes() {
         Set<HttpStatusCode> codes = config.stackOverflowClient().retry().codes();
