@@ -7,7 +7,10 @@ import edu.java.scrapper.repository.jooq.JooqChatRepository;
 import edu.java.scrapper.repository.jooq.JooqLinkRepository;
 import edu.java.scrapper.repository.jooq.JooqTrackRepository;
 import org.jooq.DSLContext;
+import org.jooq.conf.RenderQuotedNames;
+import org.jooq.impl.DefaultConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.jooq.DefaultConfigurationCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -29,5 +32,13 @@ public class JooqAccessConfiguration {
     @Bean
     TrackRepository trackRepository(DSLContext context) {
         return new JooqTrackRepository(context);
+    }
+
+    @Bean
+    public DefaultConfigurationCustomizer postgresJooqCustomizer() {
+        return (DefaultConfiguration c) -> c.settings()
+            .withRenderSchema(false)
+            .withRenderFormatted(true)
+            .withRenderQuotedNames(RenderQuotedNames.NEVER);
     }
 }
