@@ -6,19 +6,11 @@ import edu.java.scrapper.client.github.GithubClient;
 import edu.java.scrapper.client.github.GithubClientBuilder;
 import edu.java.scrapper.client.stackoverflow.StackOverflowClient;
 import edu.java.scrapper.client.stackoverflow.StackOverflowClientBuilder;
-import edu.java.scrapper.domain.Chat;
-import edu.java.scrapper.domain.Link;
-import java.net.URI;
-import java.time.OffsetDateTime;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
-import org.jooq.conf.RenderQuotedNames;
-import org.jooq.impl.DefaultConfiguration;
-import org.springframework.boot.autoconfigure.jooq.DefaultConfigurationCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatusCode;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.retry.backoff.BackOffPolicy;
 import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.backoff.FixedBackOffPolicy;
@@ -45,29 +37,6 @@ public class ScrapperConfiguration {
     @Bean
     public BotClient botClient(ApplicationConfig config) {
         return BotClientBuilder.build(builder, config.botClient().baseUrl());
-    }
-
-    @Bean
-    public DefaultConfigurationCustomizer postgresJooqCustomizer() {
-        return (DefaultConfiguration c) -> c.settings()
-            .withRenderSchema(false)
-            .withRenderFormatted(true)
-            .withRenderQuotedNames(RenderQuotedNames.NEVER);
-    }
-
-    @Bean
-    public RowMapper<Chat> chatRowMapper() {
-        return (rs, rowNum) -> new Chat(rs.getLong(1));
-    }
-
-    @Bean
-    @SuppressWarnings("MagicNumber")
-    public RowMapper<Link> linkRowMapper() {
-        return (rs, rowNum) -> new Link(
-            rs.getLong(1),
-            URI.create(rs.getString(2)),
-            rs.getObject(3, OffsetDateTime.class)
-        );
     }
 
     @Bean
