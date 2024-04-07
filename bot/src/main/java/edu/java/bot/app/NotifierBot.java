@@ -15,17 +15,14 @@ import edu.java.bot.service.CommandService;
 import jakarta.annotation.PostConstruct;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-@Component
 @Slf4j
+@Component
 public class NotifierBot implements Bot {
     private final TelegramBot bot;
     private final ExceptionHandler handler;
     private final CommandService service;
-    private final static Logger LOGGER = LoggerFactory.getLogger(NotifierBot.class);
 
     public NotifierBot(CommandService service, TelegramBot bot, ExceptionHandler handler) {
         this.bot = bot;
@@ -35,7 +32,7 @@ public class NotifierBot implements Bot {
 
     @PostConstruct
     public void start() {
-        LOGGER.info("Bot started...");
+        log.info("Bot started...");
 
         bot.setUpdatesListener(this, handler);
         setCommands();
@@ -44,7 +41,7 @@ public class NotifierBot implements Bot {
     public <T extends BaseRequest<T, R>, R extends BaseResponse> void execute(BaseRequest<T, R> request) {
         R response = bot.execute(request);
         if (!response.isOk()) {
-            LOGGER.error(response.description());
+            log.error(response.description());
         }
     }
 
@@ -52,7 +49,7 @@ public class NotifierBot implements Bot {
     public void close() {
         deleteCommands();
         bot.removeGetUpdatesListener();
-        LOGGER.info("Bot stopped...");
+        log.info("Bot stopped...");
     }
 
     @Override

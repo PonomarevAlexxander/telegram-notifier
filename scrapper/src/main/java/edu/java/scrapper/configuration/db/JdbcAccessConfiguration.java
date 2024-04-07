@@ -1,4 +1,4 @@
-package edu.java.scrapper.configuration;
+package edu.java.scrapper.configuration.db;
 
 import edu.java.scrapper.domain.Chat;
 import edu.java.scrapper.domain.Link;

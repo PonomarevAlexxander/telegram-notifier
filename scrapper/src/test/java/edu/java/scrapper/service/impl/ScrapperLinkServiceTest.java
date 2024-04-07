@@ -9,7 +9,7 @@ import edu.java.scrapper.exception.ResourceAlreadyExistException;
 import edu.java.scrapper.repository.ChatRepository;
 import edu.java.scrapper.repository.LinkRepository;
 import edu.java.scrapper.repository.TrackRepository;
-import edu.java.scrapper.service.UpdateService;
+import edu.java.scrapper.service.UpdateFetchService;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.LinkedList;
@@ -33,7 +33,7 @@ class ScrapperLinkServiceTest {
     @Mock
     ChatRepository chatRepository;
     @Mock
-    UpdateService updateService;
+    UpdateFetchService updateFetchService;
     @InjectMocks
     ScrapperLinkService linkService;
 
@@ -65,7 +65,7 @@ class ScrapperLinkServiceTest {
     @Test
     @DisplayName("Test trackNew() with not supported Link")
     void trackNew_not_supported() {
-        Mockito.when(updateService.supports(Mockito.anyString())).thenReturn(false);
+        Mockito.when(updateFetchService.supports(Mockito.anyString())).thenReturn(false);
 
         assertThatThrownBy(() -> linkService.trackNew(1L, "https://some.com"))
             .isInstanceOf(LinkIsNotSupportedException.class);
@@ -76,7 +76,7 @@ class ScrapperLinkServiceTest {
     void trackNew_existing_link() {
         String url = "http://some.com";
 
-        Mockito.when(updateService.supports(Mockito.eq(url))).thenReturn(true);
+        Mockito.when(updateFetchService.supports(Mockito.eq(url))).thenReturn(true);
         Mockito.when(linkRepository.add(Mockito.any(Link.class))).thenThrow(ResourceAlreadyExistException.class);
         Link link = new Link(21L, URI.create(url), OffsetDateTime.now());
         Mockito.when(linkRepository.getByUri(Mockito.eq(url)))
@@ -94,7 +94,7 @@ class ScrapperLinkServiceTest {
     void trackNew_not_existing_link() {
         String url = "http://some.com";
 
-        Mockito.when(updateService.supports(Mockito.eq(url))).thenReturn(true);
+        Mockito.when(updateFetchService.supports(Mockito.eq(url))).thenReturn(true);
         long linkId = 111L;
         Mockito.when(linkRepository.add(Mockito.any(Link.class))).thenReturn(linkId);
         long chatId = 1L;

@@ -4,9 +4,27 @@ app:
     base-url: "http://localhost:8080"
     retry:
       codes: [408, 429, 502, 503, 504]
-      strategy: exponential
+      strategy: linear
       delay: 1s
-      max-attempts: 3
+      max-attempts: 2
+  kafka-consumer:
+    servers: "localhost:9092,localhost:9093"
+    group-id: "bot-kafka-consumer"
+    auto-offset-reset: latest
+    enable-auto-commit: false
+    concurrency: 2
+    max-poll-interval: 5m
+    backoff-interval: 5s
+    backoff-attempts: 3
+  kafka-producer:
+    servers: "localhost:9092,localhost:9093"
+    client-id: "scrapper-producer"
+    acks: all
+    linger-ms: 5s
+    batch-size: 20
+  update-topic: "notifier.update.message"
+  use-queue: true
+
 
 spring:
   application:

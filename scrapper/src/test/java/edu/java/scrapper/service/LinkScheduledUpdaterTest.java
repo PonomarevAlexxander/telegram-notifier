@@ -23,11 +23,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class LinkScheduledUpdaterTest {
     @Mock
-    private UpdateService updateService;
+    private UpdateFetchService updateFetchService;
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private ApplicationConfig config;
     @Mock
-    private BotClient botClient;
+    private UpdatePushService updatePushService;
     @Mock
     private LinkService linkService;
     @Mock
@@ -47,11 +47,11 @@ class LinkScheduledUpdaterTest {
 
         Mockito.when(config.scheduler().forceCheckDelay()).thenReturn(Duration.of(30, ChronoUnit.MINUTES));
         Mockito.when(linkService.getAllBefore(Mockito.any(OffsetDateTime.class))).thenReturn(links);
-        Mockito.when(updateService.fetchUpdates(Mockito.anyList())).thenReturn(List.of());
+        Mockito.when(updateFetchService.fetchUpdates(Mockito.anyList())).thenReturn(List.of());
 
         linkScheduledUpdater.update();
 
-        Mockito.verifyNoInteractions(chatService, botClient);
+        Mockito.verifyNoInteractions(chatService, updatePushService);
         Mockito.verify(linkService).updateLastTrackedTime(Mockito.anyList(), Mockito.any(OffsetDateTime.class));
     }
 
@@ -66,7 +66,7 @@ class LinkScheduledUpdaterTest {
 
         Mockito.when(config.scheduler().forceCheckDelay()).thenReturn(Duration.of(30, ChronoUnit.MINUTES));
         Mockito.when(linkService.getAllBefore(Mockito.any(OffsetDateTime.class))).thenReturn(links);
-        Mockito.when(updateService.fetchUpdates(Mockito.anyList())).
+        Mockito.when(updateFetchService.fetchUpdates(Mockito.anyList())).
             thenReturn(List.of(
                 new LinkUpdate(links.get(0), true, "sth"),
                 new LinkUpdate(links.get(1), true, "sth")
@@ -76,7 +76,7 @@ class LinkScheduledUpdaterTest {
         linkScheduledUpdater.update();
 
         Mockito.verify(chatService, Mockito.times(2)).getAllByUrl(Mockito.any());
-        Mockito.verify(botClient, Mockito.times(2)).sendUpdatesOnLink(Mockito.any(LinkUpdateRequest.class));
+        Mockito.verify(updatePushService, Mockito.times(2)).sendUpdate(Mockito.any(LinkUpdateDTO.class));
         Mockito.verify(linkService).updateLastTrackedTime(Mockito.anyList(), Mockito.any(OffsetDateTime.class));
     }
 }

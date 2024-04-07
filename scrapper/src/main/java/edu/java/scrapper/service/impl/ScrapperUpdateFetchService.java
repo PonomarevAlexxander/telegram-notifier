@@ -3,7 +3,7 @@ package edu.java.scrapper.service.impl;
 import edu.java.scrapper.client.UpdateHandler;
 import edu.java.scrapper.domain.Link;
 import edu.java.scrapper.domain.LinkUpdate;
-import edu.java.scrapper.service.UpdateService;
+import edu.java.scrapper.service.UpdateFetchService;
 import java.util.LinkedList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class ScrapperUpdateService implements UpdateService {
+public class ScrapperUpdateFetchService implements UpdateFetchService {
     private final List<UpdateHandler> handlers;
 
     @Override

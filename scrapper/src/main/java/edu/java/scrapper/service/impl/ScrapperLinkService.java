@@ -9,7 +9,7 @@ import edu.java.scrapper.repository.ChatRepository;
 import edu.java.scrapper.repository.LinkRepository;
 import edu.java.scrapper.repository.TrackRepository;
 import edu.java.scrapper.service.LinkService;
-import edu.java.scrapper.service.UpdateService;
+import edu.java.scrapper.service.UpdateFetchService;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -21,7 +21,7 @@ public class ScrapperLinkService implements LinkService {
     private final LinkRepository linkRepository;
     private final TrackRepository trackRepository;
     private final ChatRepository chatRepository;
-    private final UpdateService updateService;
+    private final UpdateFetchService updateFetchService;
 
     @Override
     @Transactional(readOnly = true)
@@ -34,7 +34,7 @@ public class ScrapperLinkService implements LinkService {
     @Override
     @Transactional
     public Long trackNew(Long chatId, String url) {
-        if (!updateService.supports(url)) {
+        if (!updateFetchService.supports(url)) {
             throw new LinkIsNotSupportedException(
                 String.format("Link %s is not supported yet", url)
             );
