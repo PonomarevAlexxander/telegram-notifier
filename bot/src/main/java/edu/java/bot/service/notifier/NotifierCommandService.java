@@ -7,11 +7,13 @@ import edu.java.bot.exception.ClientExceptionHandler;
 import edu.java.bot.service.CommandService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientResponseException;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class NotifierCommandService implements CommandService {
     private final List<Command> commands;
     private final ClientExceptionHandler handler;
@@ -28,6 +30,7 @@ public class NotifierCommandService implements CommandService {
                 try {
                     return command.handle(update);
                 } catch (RestClientResponseException e) {
+                    log.error("Error from HTTP client: {} - {}", e.getStatusCode(), e.getStatusText());
                     return handler.onClientException(update, e);
                 }
             }

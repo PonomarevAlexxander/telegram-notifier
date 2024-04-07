@@ -1,8 +1,7 @@
 package edu.java.bot.service;
 
-import edu.java.bot.domain.LinkUpdate;
-import java.util.List;
+import edu.java.bot.dto.LinkUpdateDTO;
 
 public interface UpdateService {
-    void processUpdates(LinkUpdate update, List<Long> chatIds);
+    void processUpdates(LinkUpdateDTO update);
 }

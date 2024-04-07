@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author Alexander Ponomarev
  */
-public interface UpdateService {
+public interface UpdateFetchService {
     boolean supports(String link);
 
     List<LinkUpdate> fetchUpdates(List<Link> toUpdate);

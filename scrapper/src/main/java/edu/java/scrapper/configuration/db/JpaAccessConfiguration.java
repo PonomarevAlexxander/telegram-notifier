@@ -1,10 +1,10 @@
-package edu.java.scrapper.configuration;
+package edu.java.scrapper.configuration.db;
 
 import edu.java.scrapper.repository.jpa.JpaChatRepository;
 import edu.java.scrapper.repository.jpa.JpaLinkRepository;
 import edu.java.scrapper.service.ChatService;
 import edu.java.scrapper.service.LinkService;
-import edu.java.scrapper.service.UpdateService;
+import edu.java.scrapper.service.UpdateFetchService;
 import edu.java.scrapper.service.impl.JpaChatService;
 import edu.java.scrapper.service.impl.JpaLinkService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -23,8 +23,8 @@ public class JpaAccessConfiguration {
     LinkService linkService(
         JpaChatRepository chatRepository,
         JpaLinkRepository linkRepository,
-        UpdateService updateService
+        UpdateFetchService updateFetchService
     ) {
-        return new JpaLinkService(linkRepository, chatRepository, updateService);
+        return new JpaLinkService(linkRepository, chatRepository, updateFetchService);
     }
 }

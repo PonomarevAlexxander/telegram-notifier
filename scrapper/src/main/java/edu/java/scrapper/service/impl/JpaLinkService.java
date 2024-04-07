@@ -8,7 +8,7 @@ import edu.java.scrapper.exception.ResourceNotExistException;
 import edu.java.scrapper.repository.jpa.JpaChatRepository;
 import edu.java.scrapper.repository.jpa.JpaLinkRepository;
 import edu.java.scrapper.service.LinkService;
-import edu.java.scrapper.service.UpdateService;
+import edu.java.scrapper.service.UpdateFetchService;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class JpaLinkService implements LinkService {
     private final JpaLinkRepository linkRepository;
     private final JpaChatRepository chatRepository;
-    private final UpdateService updateService;
+    private final UpdateFetchService updateFetchService;
 
     @Override
     @Transactional(readOnly = true)
@@ -32,7 +32,7 @@ public class JpaLinkService implements LinkService {
     @Override
     @Transactional
     public Long trackNew(Long chatId, String url) {
-        if (!updateService.supports(url)) {
+        if (!updateFetchService.supports(url)) {
             throw new LinkIsNotSupportedException(
                 String.format("Link %s is not supported yet", url)
             );

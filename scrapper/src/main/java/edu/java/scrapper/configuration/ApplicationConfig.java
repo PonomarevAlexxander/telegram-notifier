@@ -2,6 +2,7 @@ package edu.java.scrapper.configuration;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import java.time.Duration;
 import java.util.Set;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -22,7 +23,9 @@ public record ApplicationConfig(
     @NotNull
     BotClient botClient,
     @NotNull
-    AccessType databaseAccessType
+    AccessType databaseAccessType,
+    boolean useQueue,
+    Kafka kafkaProducer
 ) {
     public record Scheduler(boolean enable, @NotNull Duration interval, @NotNull Duration forceCheckDelay) {
     }
@@ -37,6 +40,20 @@ public record ApplicationConfig(
     }
 
     public record Retry(Set<HttpStatusCode> codes, BackoffStrategy strategy, Duration delay, int maxAttempts) {
+    }
+
+    public record Kafka(
+        @NotBlank
+        String servers,
+        @NotBlank
+        String clientId,
+        @NotBlank
+        String acks,
+        @NotNull
+        Duration lingerMs,
+        @PositiveOrZero
+        Integer batchSize
+    ) {
     }
 
     public enum BackoffStrategy {
