@@ -8,7 +8,7 @@ app:
       delay: 1s
       max-attempts: 2
   update-topic: "notifier.update.message"
-  use-queue: true
+  use-queue: false
 
 
 spring:
@@ -49,17 +49,39 @@ spring:
         delay: 5s
     bootstrap-servers: "localhost:9092,localhost:9093"
 
-springdoc:
-  api-docs:
-    path: "/api-docs"
-  swagger-ui:
-    path: "/swagger-ui"
+  springdoc:
+    api-docs:
+      path: "/api-docs"
+    swagger-ui:
+      path: "/swagger-ui"
 
 server:
   port: 8090
 
 logging:
   config: classpath:log4j2-plain.xml
+
+management:
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  server:
+    port: 8091
+  endpoints:
+    enabled-by-default: false
+    web:
+      base-path: "/"
+      exposure:
+        include: "*"
+      path-mapping:
+        prometheus: "/metrics"
+  endpoint:
+    info:
+      enabled: true
+    health:
+      enabled: true
+    prometheus:
+      enabled: true
 
 bucket4j:
   enabled: true

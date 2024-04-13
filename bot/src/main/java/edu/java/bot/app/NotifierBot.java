@@ -12,6 +12,8 @@ import com.pengrad.telegrambot.request.SetMyCommands;
 import com.pengrad.telegrambot.response.BaseResponse;
 import edu.java.bot.command.Command;
 import edu.java.bot.service.CommandService;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.annotation.PostConstruct;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -23,11 +25,20 @@ public class NotifierBot implements Bot {
     private final TelegramBot bot;
     private final ExceptionHandler handler;
     private final CommandService service;
+    private final Counter successCounter;
+    private final Counter failCounter;
 
-    public NotifierBot(CommandService service, TelegramBot bot, ExceptionHandler handler) {
+    @SuppressWarnings("MultipleStringLiterals")
+    public NotifierBot(CommandService service, TelegramBot bot, ExceptionHandler handler, MeterRegistry registry) {
         this.bot = bot;
         this.handler = handler;
         this.service = service;
+        this.successCounter = Counter.builder("telegram.messages.processed")
+            .tags("type", "success")
+            .register(registry);
+        this.failCounter = Counter.builder("telegram.messages.processed")
+            .tags("type", "failed")
+            .register(registry);
     }
 
     @PostConstruct
@@ -58,12 +69,14 @@ public class NotifierBot implements Bot {
             SendMessage request;
             try {
                 request = service.process(update);
+                successCounter.increment();
             } catch (Exception ex) {
                 log.error("Error: {}", ex.toString());
                 request = new SendMessage(
                     update.message().chat().id(),
                     "Service is currently unavailable or some internal error happened."
                 );
+                failCounter.increment();
             }
             execute(request);
         }
