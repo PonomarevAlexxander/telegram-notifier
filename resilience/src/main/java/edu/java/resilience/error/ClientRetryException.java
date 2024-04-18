@@ -1,4 +1,4 @@
-package edu.java.scrapper.exception;
+package edu.java.resilience.error;
 
 public class ClientRetryException extends ApplicationException {
     public ClientRetryException(String message) {

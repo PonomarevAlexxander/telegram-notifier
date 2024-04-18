@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.retry.annotation.EnableRetry;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"edu.java.resilience", "edu.java.scrapper"})
 @EnableConfigurationProperties(ApplicationConfig.class)
 @EnableRetry
 @EnableCaching

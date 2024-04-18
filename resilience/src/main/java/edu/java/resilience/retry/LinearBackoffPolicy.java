@@ -1,4 +1,4 @@
-package edu.java.scrapper.configuration;
+package edu.java.resilience.retry;
 
 import lombok.Setter;
 import org.springframework.retry.RetryContext;

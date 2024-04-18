@@ -1,6 +1,6 @@
 package edu.java.scrapper.controller;
 
-import edu.java.scrapper.controller.dto.ChatResponse;
+import edu.java.resilience.dto.ChatResponse;
 import edu.java.scrapper.service.ChatService;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;

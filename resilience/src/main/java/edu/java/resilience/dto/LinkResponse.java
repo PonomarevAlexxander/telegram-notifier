@@ -1,4 +1,4 @@
-package edu.java.bot.client.dto;
+package edu.java.resilience.dto;
 
 import java.net.URI;
 

@@ -1,4 +1,4 @@
-package edu.java.scrapper.configuration;
+package edu.java.resilience.config;
 
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
 import org.springframework.core.convert.converter.Converter;

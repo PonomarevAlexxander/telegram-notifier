@@ -1,6 +1,5 @@
-package edu.java.scrapper.client;
+package edu.java.resilience.error;
 
-import edu.java.scrapper.exception.ClientRetryException;
 import java.io.IOException;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +10,7 @@ import org.springframework.web.client.DefaultResponseErrorHandler;
 
 @Component
 @RequiredArgsConstructor
-public class ClientResponseErrorHandler extends DefaultResponseErrorHandler {
+public class HttpClientErrorHandler extends DefaultResponseErrorHandler {
     private final Set<HttpStatusCode> retryStatusCodes;
 
     @Override

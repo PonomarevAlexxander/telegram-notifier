@@ -1,19 +1,25 @@
 package edu.java.scrapper.client.stackoverflow;
 
-import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.reactive.function.client.support.WebClientAdapter;
+import edu.java.resilience.error.HttpClientErrorHandler;
+import org.springframework.web.client.RestClient;
+import org.springframework.web.client.support.RestClientAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 public class StackOverflowClientBuilder {
     private StackOverflowClientBuilder() {
     }
 
-    public static StackOverflowClient build(WebClient.Builder builder, String baseUrl) {
-        WebClient webClient = builder
+    public static StackOverflowClient build(
+        RestClient.Builder builder,
+        String baseUrl,
+        HttpClientErrorHandler errorHandler
+    ) {
+        RestClient webClient = builder
             .baseUrl(baseUrl)
+            .defaultStatusHandler(errorHandler)
             .build();
         HttpServiceProxyFactory proxyFactory = HttpServiceProxyFactory
-            .builderFor(WebClientAdapter.create(webClient))
+            .builderFor(RestClientAdapter.create(webClient))
             .build();
         return proxyFactory.createClient(StackOverflowClient.class);
     }

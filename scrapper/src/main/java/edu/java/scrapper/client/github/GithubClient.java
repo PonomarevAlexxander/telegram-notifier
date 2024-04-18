@@ -1,8 +1,8 @@
 package edu.java.scrapper.client.github;
 
+import edu.java.resilience.error.ClientRetryException;
 import edu.java.scrapper.client.github.dto.CommitsListItem;
 import edu.java.scrapper.client.github.dto.Repository;
-import edu.java.scrapper.exception.ClientRetryException;
 import java.util.List;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.web.bind.annotation.PathVariable;
