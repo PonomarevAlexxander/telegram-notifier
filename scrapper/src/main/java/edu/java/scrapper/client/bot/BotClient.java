@@ -1,8 +1,8 @@
 package edu.java.scrapper.client.bot;
 
-import edu.java.scrapper.client.bot.dto.LinkUpdateRequest;
-import edu.java.scrapper.client.bot.dto.LinkUpdateResponse;
-import edu.java.scrapper.exception.ClientRetryException;
+import edu.java.resilience.dto.LinkUpdateRequest;
+import edu.java.resilience.dto.LinkUpdateResponse;
+import edu.java.resilience.error.ClientRetryException;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.service.annotation.PostExchange;

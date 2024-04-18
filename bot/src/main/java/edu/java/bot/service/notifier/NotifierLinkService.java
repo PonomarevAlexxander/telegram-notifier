@@ -1,9 +1,9 @@
 package edu.java.bot.service.notifier;
 
 import edu.java.bot.client.ScrapperClient;
-import edu.java.bot.client.dto.LinkRequest;
-import edu.java.bot.client.dto.LinkResponse;
 import edu.java.bot.service.LinkService;
+import edu.java.resilience.dto.LinkRequest;
+import edu.java.resilience.dto.LinkResponse;
 import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

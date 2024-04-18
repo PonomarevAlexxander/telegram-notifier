@@ -31,7 +31,7 @@ public abstract class IntegrationTest {
             .withUsername("postgres")
             .withPassword("postgres")
             .waitingFor(Wait.forListeningPort());
-        POSTGRES.start();
+        POSTGRES.   start();
         runMigrations(POSTGRES);
     }
 

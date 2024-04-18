@@ -1,4 +1,4 @@
-package edu.java.scrapper.exception.dto;
+package edu.java.resilience.dto;
 
 import java.util.Arrays;
 import java.util.List;

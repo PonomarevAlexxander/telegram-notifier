@@ -3,7 +3,8 @@ package edu.java.bot.configuration;
 import com.pengrad.telegrambot.TelegramBot;
 import edu.java.bot.client.ScrapperClient;
 import edu.java.bot.client.ScrapperClientBuilder;
-import edu.java.bot.client.ScrapperResponseErrorHandler;
+import edu.java.resilience.error.HttpClientErrorHandler;
+import edu.java.resilience.retry.LinearBackoffPolicy;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -24,7 +25,7 @@ public class BotConfiguration {
     private final ApplicationConfig config;
 
     @Bean
-    public ScrapperClient scrapperClient(ApplicationConfig config, ScrapperResponseErrorHandler handler) {
+    public ScrapperClient scrapperClient(ApplicationConfig config, HttpClientErrorHandler handler) {
         return ScrapperClientBuilder.build(builder, config.scrapperClient().baseUrl(), handler);
     }
 
@@ -40,8 +41,11 @@ public class BotConfiguration {
     }
 
     @Bean
-    public RetryOperationsInterceptor interceptor() {
-        ApplicationConfig.Retry retry = config.scrapperClient().retry();
+    public RetryOperationsInterceptor scrapperInterceptor() {
+        return interceptor(config.scrapperClient().retry());
+    }
+
+    public static RetryOperationsInterceptor interceptor(ApplicationConfig.Retry retry) {
         BackOffPolicy backOffPolicy = switch (retry.strategy()) {
             case EXPONENTIAL -> {
                 ExponentialBackOffPolicy policy = new ExponentialBackOffPolicy();

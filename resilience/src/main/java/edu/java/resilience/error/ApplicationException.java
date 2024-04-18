@@ -1,4 +1,4 @@
-package edu.java.scrapper.exception;
+package edu.java.resilience.error;
 
 public class ApplicationException extends RuntimeException {
 

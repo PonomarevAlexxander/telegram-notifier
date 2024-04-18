@@ -1,11 +1,14 @@
 package edu.java.scrapper.client.stackoverflow;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
+import edu.java.resilience.error.HttpClientErrorHandler;
 import edu.java.scrapper.client.stackoverflow.dto.StackOverflowAnswersResponse;
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.HashSet;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.web.client.RestClient;
 import org.springframework.web.reactive.function.client.WebClient;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
@@ -18,7 +21,7 @@ import static wiremock.com.google.common.net.HttpHeaders.CONTENT_TYPE;
 
 @WireMockTest(httpPort = 8080)
 class StackOverflowClientTest {
-    public StackOverflowClient client = StackOverflowClientBuilder.build(WebClient.builder(), "http://localhost:8080");
+    public StackOverflowClient client = StackOverflowClientBuilder.build(RestClient.builder(), "http://localhost:8080", new HttpClientErrorHandler(new HashSet<>()));;
     public String answers = """
         {
           "items": [

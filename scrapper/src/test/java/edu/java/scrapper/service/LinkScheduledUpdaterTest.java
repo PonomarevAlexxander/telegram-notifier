@@ -1,7 +1,7 @@
 package edu.java.scrapper.service;
 
+import edu.java.resilience.dto.LinkUpdateRequest;
 import edu.java.scrapper.client.bot.BotClient;
-import edu.java.scrapper.client.bot.dto.LinkUpdateRequest;
 import edu.java.scrapper.configuration.ApplicationConfig;
 import edu.java.scrapper.domain.Chat;
 import edu.java.scrapper.domain.Link;

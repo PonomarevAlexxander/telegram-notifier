@@ -1,7 +1,7 @@
 package edu.java.scrapper.exception;
 
 import com.giffing.bucket4j.spring.boot.starter.context.RateLimitException;
-import edu.java.scrapper.exception.dto.ApiErrorResponse;
+import edu.java.resilience.dto.ApiErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;

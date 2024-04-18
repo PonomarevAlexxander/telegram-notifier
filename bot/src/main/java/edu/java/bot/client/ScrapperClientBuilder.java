@@ -1,11 +1,8 @@
 package edu.java.bot.client;
 
-import edu.java.bot.exception.ClientRetryException;
-import java.util.Set;
-import org.springframework.http.HttpStatusCode;
+import edu.java.resilience.error.HttpClientErrorHandler;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.support.RestClientAdapter;
-import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 public class ScrapperClientBuilder {
@@ -15,7 +12,7 @@ public class ScrapperClientBuilder {
     public static ScrapperClient build(
         RestClient.Builder builder,
         String baseUrl,
-        ScrapperResponseErrorHandler errorHandler
+        HttpClientErrorHandler errorHandler
     ) {
         RestClient restClient = builder
             .defaultStatusHandler(errorHandler)
@@ -25,15 +22,5 @@ public class ScrapperClientBuilder {
             .builderFor(RestClientAdapter.create(restClient))
             .build();
         return proxyFactory.createClient(ScrapperClient.class);
-    }
-
-    private ExchangeFilterFunction retryFilter(Set<HttpStatusCode> retryCodes) {
-        return (request, next) ->
-            next.exchange(request)
-                .doOnNext(clientResponse -> {
-                    if (retryCodes.contains(clientResponse.statusCode())) {
-                        throw new ClientRetryException("Need to retry request");
-                    }
-                });
     }
 }

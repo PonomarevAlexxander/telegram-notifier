@@ -1,7 +1,7 @@
 package edu.java.scrapper.client.stackoverflow;
 
+import edu.java.resilience.error.ClientRetryException;
 import edu.java.scrapper.client.stackoverflow.dto.StackOverflowAnswersResponse;
-import edu.java.scrapper.exception.ClientRetryException;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.service.annotation.GetExchange;

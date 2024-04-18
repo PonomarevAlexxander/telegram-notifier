@@ -1,10 +1,11 @@
 package edu.java.bot.client;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
-import edu.java.bot.client.dto.ChatResponse;
-import edu.java.bot.client.dto.LinkRequest;
-import edu.java.bot.client.dto.LinkResponse;
-import edu.java.bot.client.dto.LinksResponse;
+import edu.java.resilience.dto.ChatResponse;
+import edu.java.resilience.dto.LinkRequest;
+import edu.java.resilience.dto.LinkResponse;
+import edu.java.resilience.dto.LinksResponse;
+import edu.java.resilience.error.HttpClientErrorHandler;
 import java.net.http.HttpClient;
 import java.util.HashSet;
 import org.junit.jupiter.api.DisplayName;
@@ -30,7 +31,7 @@ class ScrapperClientTest {
             .requestFactory(new JdkClientHttpRequestFactory((HttpClient.newBuilder()
                 .version(HttpClient.Version.HTTP_1_1).build()))),
         "http://localhost:8080",
-        new ScrapperResponseErrorHandler(new HashSet<>())
+        new HttpClientErrorHandler(new HashSet<>())
     );
 
     @Test

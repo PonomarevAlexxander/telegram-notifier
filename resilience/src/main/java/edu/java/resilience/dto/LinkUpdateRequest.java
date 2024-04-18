@@ -1,4 +1,4 @@
-package edu.java.scrapper.client.bot.dto;
+package edu.java.resilience.dto;
 
 import java.net.URI;
 import java.util.List;

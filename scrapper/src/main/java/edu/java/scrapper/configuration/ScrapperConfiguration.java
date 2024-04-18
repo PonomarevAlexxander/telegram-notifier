@@ -1,5 +1,7 @@
 package edu.java.scrapper.configuration;
 
+import edu.java.resilience.error.HttpClientErrorHandler;
+import edu.java.resilience.retry.LinearBackoffPolicy;
 import edu.java.scrapper.client.bot.BotClient;
 import edu.java.scrapper.client.bot.BotClientBuilder;
 import edu.java.scrapper.client.github.GithubClient;
@@ -16,27 +18,27 @@ import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.backoff.FixedBackOffPolicy;
 import org.springframework.retry.interceptor.RetryInterceptorBuilder;
 import org.springframework.retry.interceptor.RetryOperationsInterceptor;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.client.RestClient;
 
 @Configuration
 @RequiredArgsConstructor
 public class ScrapperConfiguration {
-    private final WebClient.Builder builder;
+    private final RestClient.Builder builder;
     private final ApplicationConfig config;
 
     @Bean
-    public StackOverflowClient stackOverflowClient(ApplicationConfig config) {
-        return StackOverflowClientBuilder.build(builder, config.stackOverflowClient().baseUrl());
+    public StackOverflowClient stackOverflowClient(ApplicationConfig config, HttpClientErrorHandler errorHandler) {
+        return StackOverflowClientBuilder.build(builder, config.stackOverflowClient().baseUrl(), errorHandler);
     }
 
     @Bean
-    public GithubClient githubClient(ApplicationConfig config) {
-        return GithubClientBuilder.build(builder, config.githubClient().baseUrl());
+    public GithubClient githubClient(ApplicationConfig config, HttpClientErrorHandler errorHandler) {
+        return GithubClientBuilder.build(builder, config.githubClient().baseUrl(), errorHandler);
     }
 
     @Bean
-    public BotClient botClient(ApplicationConfig config) {
-        return BotClientBuilder.build(builder, config.botClient().baseUrl());
+    public BotClient botClient(ApplicationConfig config, HttpClientErrorHandler errorHandler) {
+        return BotClientBuilder.build(builder, config.botClient().baseUrl(), errorHandler);
     }
 
     @Bean
@@ -63,7 +65,7 @@ public class ScrapperConfiguration {
         return interceptor(config.stackOverflowClient().retry());
     }
 
-    private RetryOperationsInterceptor interceptor(ApplicationConfig.Retry retry) {
+    public static RetryOperationsInterceptor interceptor(ApplicationConfig.Retry retry) {
         BackOffPolicy backOffPolicy = switch (retry.strategy()) {
             case EXPONENTIAL -> {
                 ExponentialBackOffPolicy policy = new ExponentialBackOffPolicy();

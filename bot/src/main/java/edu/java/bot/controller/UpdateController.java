@@ -1,8 +1,9 @@
 package edu.java.bot.controller;
 
-import edu.java.bot.controller.dto.LinkUpdateRequest;
-import edu.java.bot.controller.dto.LinkUpdateResponse;
+import edu.java.bot.domain.LinkUpdate;
 import edu.java.bot.service.UpdateService;
+import edu.java.resilience.dto.LinkUpdateRequest;
+import edu.java.resilience.dto.LinkUpdateResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +18,7 @@ public class UpdateController {
 
     @PostMapping
     public LinkUpdateResponse processUpdate(@RequestBody LinkUpdateRequest body) {
-        updateService.processUpdates(body.toLinkUpdate(), body.tgChatIds());
+        updateService.processUpdates(new LinkUpdate(body.url(), body.description()), body.tgChatIds());
         return new LinkUpdateResponse("Update successfully processed");
     }
 }

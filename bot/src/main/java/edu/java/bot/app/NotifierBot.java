@@ -14,11 +14,13 @@ import edu.java.bot.command.Command;
 import edu.java.bot.service.CommandService;
 import jakarta.annotation.PostConstruct;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class NotifierBot implements Bot {
     private final TelegramBot bot;
     private final ExceptionHandler handler;
@@ -57,7 +59,15 @@ public class NotifierBot implements Bot {
     public int process(List<Update> updates) {
         for (var update : updates) {
             SendMessage request;
-            request = service.process(update);
+            try {
+                request = service.process(update);
+            } catch (Exception ex) {
+                log.error("Error: {}", ex.toString());
+                request = new SendMessage(
+                    update.message().chat().id(),
+                    "Service is currently unavailable or some internal error happened."
+                );
+            }
             execute(request);
         }
         return UpdatesListener.CONFIRMED_UPDATES_ALL;

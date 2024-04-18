@@ -25,7 +25,7 @@ public class JpaLinkService implements LinkService {
     @Transactional(readOnly = true)
     public List<LinkDTO> getAllByChatId(Long chatId) {
         return linkRepository.findAll().stream()
-            .map(link -> new LinkDTO(link.getId(), link.getUri().toString()))
+            .map(link -> new LinkDTO(link.getId(), link.getUri()))
             .toList();
     }
 

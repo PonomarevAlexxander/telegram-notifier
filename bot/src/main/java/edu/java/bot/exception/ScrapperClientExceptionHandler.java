@@ -2,7 +2,7 @@ package edu.java.bot.exception;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.client.dto.ApiErrorResponse;
+import edu.java.resilience.dto.ApiErrorResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientResponseException;
 
