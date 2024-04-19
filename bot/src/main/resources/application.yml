@@ -3,25 +3,10 @@ app:
   scrapper-client:
     base-url: "http://localhost:8080"
     retry:
-      codes: [408, 429, 502, 503, 504]
+      codes: [ 408, 429, 502, 503, 504 ]
       strategy: linear
       delay: 1s
       max-attempts: 2
-  kafka-consumer:
-    servers: "localhost:9092,localhost:9093"
-    group-id: "bot-kafka-consumer"
-    auto-offset-reset: latest
-    enable-auto-commit: false
-    concurrency: 2
-    max-poll-interval: 5m
-    backoff-interval: 5s
-    backoff-attempts: 3
-  kafka-producer:
-    servers: "localhost:9092,localhost:9093"
-    client-id: "scrapper-producer"
-    acks: all
-    linger-ms: 5s
-    batch-size: 20
   update-topic: "notifier.update.message"
   use-queue: true
 
@@ -36,6 +21,33 @@ spring:
       - rate-limit-buckets
     caffeine:
       spec: maximumSize=100000,expireAfterAccess=3600s
+  kafka:
+    consumer:
+      group-id: "bot-kafka-consumer"
+      auto-offset-reset: latest
+      enable-auto-commit: false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+
+    producer:
+      client-id: "bot-kafka-producer"
+      batch-size: 20
+      acks: all
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        linger.ms: 10000
+    listener:
+      concurrency: 2
+      ack-mode: manual
+    retry:
+      topic:
+        enabled: true
+        attempts: 3
+        delay: 5s
+    bootstrap-servers: "localhost:9092,localhost:9093"
 
 springdoc:
   api-docs:

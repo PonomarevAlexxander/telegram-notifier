@@ -1,4 +1,4 @@
-package edu.java.scrapper.configuration;
+package edu.java.scrapper.configuration.client;
 
 import edu.java.resilience.error.HttpClientErrorHandler;
 import edu.java.resilience.retry.LinearBackoffPolicy;
@@ -8,6 +8,7 @@ import edu.java.scrapper.client.github.GithubClient;
 import edu.java.scrapper.client.github.GithubClientBuilder;
 import edu.java.scrapper.client.stackoverflow.StackOverflowClient;
 import edu.java.scrapper.client.stackoverflow.StackOverflowClientBuilder;
+import edu.java.scrapper.configuration.ApplicationConfig;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +23,7 @@ import org.springframework.web.client.RestClient;
 
 @Configuration
 @RequiredArgsConstructor
-public class ScrapperConfiguration {
+public class ClientConfiguration {
     private final RestClient.Builder builder;
     private final ApplicationConfig config;
 

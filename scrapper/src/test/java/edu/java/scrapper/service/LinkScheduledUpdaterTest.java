@@ -1,7 +1,6 @@
 package edu.java.scrapper.service;
 
 import edu.java.resilience.dto.LinkUpdateRequest;
-import edu.java.scrapper.client.bot.BotClient;
 import edu.java.scrapper.configuration.ApplicationConfig;
 import edu.java.scrapper.domain.Chat;
 import edu.java.scrapper.domain.Link;
@@ -76,7 +75,7 @@ class LinkScheduledUpdaterTest {
         linkScheduledUpdater.update();
 
         Mockito.verify(chatService, Mockito.times(2)).getAllByUrl(Mockito.any());
-        Mockito.verify(updatePushService, Mockito.times(2)).sendUpdate(Mockito.any(LinkUpdateDTO.class));
+        Mockito.verify(updatePushService, Mockito.times(2)).sendUpdate(Mockito.any(LinkUpdateRequest.class));
         Mockito.verify(linkService).updateLastTrackedTime(Mockito.anyList(), Mockito.any(OffsetDateTime.class));
     }
 }

@@ -24,12 +24,6 @@ app:
       strategy: exponential
       delay: 1s
       max-attempts: 10
-  kafka-producer:
-    servers: "localhost:9092,localhost:9093"
-    client-id: "scrapper-producer"
-    acks: all
-    linger-ms: 5s
-    batch-size: 20
 
   database-access-type: jpa
   use-queue: true
@@ -55,6 +49,16 @@ spring:
       - buckets
     caffeine:
       spec: maximumSize=100000,expireAfterAccess=3600s
+  kafka:
+    producer:
+      bootstrap-servers: "localhost:9092,localhost:9093"
+      client-id: "scrapper-kafka-producer"
+      batch-size: 20
+      acks: all
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        linger.ms: 10000
 
 springdoc:
   api-docs:
