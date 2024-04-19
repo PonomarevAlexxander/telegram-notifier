@@ -1,6 +1,5 @@
 package edu.java.bot.controller;
 
-import edu.java.bot.domain.LinkUpdate;
 import edu.java.bot.service.UpdateService;
 import edu.java.resilience.dto.LinkUpdateRequest;
 import edu.java.resilience.dto.LinkUpdateResponse;
@@ -18,7 +17,7 @@ public class UpdateController {
 
     @PostMapping
     public LinkUpdateResponse processUpdate(@RequestBody LinkUpdateRequest body) {
-        updateService.processUpdates(new LinkUpdate(body.url(), body.description()), body.tgChatIds());
+        updateService.processUpdates(body);
         return new LinkUpdateResponse("Update successfully processed");
     }
 }

@@ -25,7 +25,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
-import static edu.java.scrapper.configuration.ScrapperConfiguration.interceptor;
+import static edu.java.scrapper.configuration.client.ClientConfiguration.interceptor;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 @WireMockTest(httpPort = 8080)

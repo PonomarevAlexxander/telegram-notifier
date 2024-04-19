@@ -1,7 +1,7 @@
 package edu.java.bot.service;
 
-import edu.java.bot.dto.LinkUpdateDTO;
+import edu.java.resilience.dto.LinkUpdateRequest;
 
 public interface UpdateService {
-    void processUpdates(LinkUpdateDTO update);
+    void processUpdates(LinkUpdateRequest update);
 }

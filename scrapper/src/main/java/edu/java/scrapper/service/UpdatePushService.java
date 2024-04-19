@@ -1,7 +1,7 @@
 package edu.java.scrapper.service;
 
-import edu.java.scrapper.dto.LinkUpdateDTO;
+import edu.java.resilience.dto.LinkUpdateRequest;
 
 public interface UpdatePushService {
-    void sendUpdate(LinkUpdateDTO update);
+    void sendUpdate(LinkUpdateRequest update);
 }

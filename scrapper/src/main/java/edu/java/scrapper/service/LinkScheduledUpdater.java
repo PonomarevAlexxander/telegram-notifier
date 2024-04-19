@@ -1,10 +1,10 @@
 package edu.java.scrapper.service;
 
+import edu.java.resilience.dto.LinkUpdateRequest;
 import edu.java.scrapper.configuration.ApplicationConfig;
 import edu.java.scrapper.domain.Chat;
 import edu.java.scrapper.domain.Link;
 import edu.java.scrapper.domain.LinkUpdate;
-import edu.java.scrapper.dto.LinkUpdateDTO;
 import java.time.OffsetDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,12 @@ public class LinkScheduledUpdater {
             List<Long> chats = chatService.getAllByUrl(link.getUri().toString()).stream()
                 .map(Chat::getId)
                 .toList();
-            updatePushService.sendUpdate(new LinkUpdateDTO(link.getId(), link.getUri(), update.updateInfo(), chats));
+            updatePushService.sendUpdate(new LinkUpdateRequest(
+                link.getId(),
+                link.getUri(),
+                update.updateInfo(),
+                chats
+            ));
         }
         linkService.updateLastTrackedTime(toUpdate.stream()
             .map(Link::getId)
