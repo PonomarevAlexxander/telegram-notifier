@@ -10,7 +10,6 @@ app:
   update-topic: "notifier.update.message"
   use-queue: false
 
-
 spring:
   application:
     name: bot
@@ -30,7 +29,6 @@ spring:
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
         spring.json.trusted.packages: "*"
-
     producer:
       client-id: "bot-kafka-producer"
       batch-size: 20
