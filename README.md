@@ -16,6 +16,7 @@
 ![Bot](https://github.com/sanyarnd/java-course-2023-backend-template/actions/workflows/bot.yml/badge.svg)
 ![Scrapper](https://github.com/sanyarnd/java-course-2023-backend-template/actions/workflows/scrapper.yml/badge.svg)
 
+
 # Link Tracker
 
 ## About the project
@@ -55,8 +56,6 @@ You can clone repository locally with this command
 ```shell
 git clone https://github.com/PonomarevAlexxander/telegram-notifier.git
 ```
-
-
 
 ### Editing application.yml files
 
